@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #f8f8f8 url('https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/bg_cinza-right-62e1426c08f60.png') no-repeat bottom right fixed;
+    overflow: hidden;
+}
+
+#conteiner {
+    display: flex;
+}
+
+#header {
+    float: left;
+    width: 20%;
+    height: 100%;
+    background: #ffffff;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 20px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.img {
+    padding: 20px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.logo {
+    /* background: blue; */
+    width: 100%;
+    height: auto;
+    max-width: 150px;
+    background-color: transparent;
+}
+
+.titulo h1 {
+    color: #005c6d;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 400;
+    font-family: 'Roboto Slab'
+}
+
+#menulateral {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    text-align: left;
+    list-style: none;
+}
+
+#menulateral li {
+    border-bottom: solid 1px #e9e9e9;
+}
+
+#menulateral li:last-child {
+    border-bottom: 0;
+}
+
+#menulateral li a {
+    width: 100%;
+    color: #666;
+    padding: 20px;
+    transition: 0.3s;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 18px;
+    text-decoration: none;
+    display: block;
+    box-sizing: border-box;
+}
+
+#menulateral li a:hover {
+    background: #e9e9e9;
+}
+
+#content {
+    margin-left: auto;
+    width: 65%;
+    height: 1000px;
+    box-sizing: border-box;
+    background-color: transparent;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.data {
+    box-sizing: border-box;
+    padding-right: 50px;
+    width: 100%;
+    float: left;
+    max-width: 1200px;
+    overflow: hidden;
+    overflow-y: hidden;
+    overflow-y: auto;
+}
+
+.data h1 {
+    color: #005C6D;
+    font-size: 36px;
+    font-weight: 400;
+    margin: 0;
+    margin-top: 0px;
+    margin-top: 30px;
+}
+
+.divisao {
+    background-image: url("https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/divisor.svg");
+    background-position: center left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 15px;
+    display: inline-block;
+    margin-bottom: 30px;
+}
