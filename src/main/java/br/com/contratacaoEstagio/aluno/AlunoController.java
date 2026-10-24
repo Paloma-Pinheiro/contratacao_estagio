@@ -13,19 +13,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
-@RestController 
+@RestController
 @RequestMapping("api/aluno")
 public class AlunoController {
     private final AlunoService alunoService;
 
-    public AlunoController(AlunoService alunoService){
+    public AlunoController(AlunoService alunoService) {
         this.alunoService = alunoService;
     }
 
-    @PostMapping 
-    public ResponseEntity<Aluno> cadastrar(@RequestBody Aluno aluno){
-        if(alunoService.verificarRa(aluno.getRa())){
+    @PostMapping
+    public ResponseEntity<Aluno> cadastrar(@RequestBody Aluno aluno) {
+        if (alunoService.verificarRa(aluno.getRa())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
@@ -35,19 +36,33 @@ public class AlunoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Aluno> atualizar(@PathVariable("id") String ra,@RequestBody Aluno dadosAtualizados){
+    public ResponseEntity<Aluno> atualizar(@PathVariable("id") String ra, @RequestBody Aluno dadosAtualizados) {
         Aluno aluno = alunoService.atualizar(ra, dadosAtualizados);
         return ResponseEntity.ok(aluno);
-    } 
+    }
+
+    @PostMapping("/{ra}/desativar")
+    public RedirectView desativarAluno(@PathVariable("ra") String ra) {
+        alunoService.desativar(ra);
+
+        return new RedirectView("/aluno", true);
+    }
+
+    @PostMapping("/{ra}/ativar")
+    public RedirectView alternarAtivo(@PathVariable("ra") String ra) {
+        alunoService.Ativar(ra);
+
+        return new RedirectView("/aluno", true);
+    }
 
     @GetMapping
-    public ResponseEntity<List<Aluno>> ListarTodos(Model model){
+    public ResponseEntity<List<Aluno>> ListarTodos(Model model) {
         return ResponseEntity.ok(alunoService.listarTodos());
     }
 
-    @DeleteMapping("/{ra}")
-    public ResponseEntity<Void> excluirPorRa(@PathVariable String ra){
-        if(!alunoService.verificarRa(ra)){
+    @DeleteMapping("/{ra}/deletar")
+    public ResponseEntity<Void> excluirPorRa(@PathVariable String ra) {
+        if (!alunoService.verificarRa(ra)) {
             return ResponseEntity.notFound().build();
         }
 
@@ -55,5 +70,5 @@ public class AlunoController {
 
         return ResponseEntity.noContent().build();
     }
-    
+
 }

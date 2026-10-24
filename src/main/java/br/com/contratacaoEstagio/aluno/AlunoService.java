@@ -7,20 +7,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-@Service 
+import jakarta.transaction.Transactional;
+
+@Service
 public class AlunoService {
     private final AlunoRepository alunoRepository;
 
-    public AlunoService(AlunoRepository alunoRepository){
+    public AlunoService(AlunoRepository alunoRepository) {
         this.alunoRepository = alunoRepository;
     }
 
-    public Aluno cadastrar(Aluno aluno){
+    public Aluno cadastrar(Aluno aluno) {
         return alunoRepository.save(aluno);
     }
 
-    public Aluno atualizar(String ra, Aluno dadosAtualizados){
-        Aluno aluno = alunoRepository.findById(ra).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encotrado."));
+    public Aluno atualizar(String ra, Aluno dadosAtualizados) {
+        Aluno aluno = alunoRepository.findById(ra)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encotrado."));
 
         aluno.setAnoIngresso(dadosAtualizados.getAnoIngresso());
         aluno.setAtivo(dadosAtualizados.isAtivo());
@@ -37,17 +40,35 @@ public class AlunoService {
         return alunoRepository.save(aluno);
     }
 
-    public List<Aluno> listarTodos(){
+    @Transactional
+    public void desativar(String ra) {
+        Aluno aluno = alunoRepository.findById(ra)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado: " + ra));
+
+        aluno.setAtivo(false);
+        alunoRepository.save(aluno);
+    }
+
+    @Transactional
+    public void Ativar(String ra) {
+        Aluno aluno = alunoRepository.findById(ra)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado: " + ra));
+
+        aluno.setAtivo(!aluno.isAtivo());
+        alunoRepository.save(aluno);
+    }
+
+    public List<Aluno> listarTodos() {
         return alunoRepository.findAll();
     }
 
-    public Optional<Aluno> buscarPorRa(String ra){
+    public Optional<Aluno> buscarPorRa(String ra) {
         return alunoRepository.findById(ra);
     }
 
-    public boolean verificarRa(String ra){
+    public boolean verificarRa(String ra) {
         return alunoRepository.existsById(ra);
-    } 
+    }
 
     public void excluirPorRa(String ra) {
         alunoRepository.deleteById(ra);

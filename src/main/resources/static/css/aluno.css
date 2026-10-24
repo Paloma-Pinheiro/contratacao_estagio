@@ -1,3 +1,7 @@
+.content {
+    width: 77%;
+}
+
 .tabela-container {
     width: 100%;
     /* overflow-x: auto; */
@@ -7,23 +11,30 @@
     overflow-x: auto;
 }
 
+.icon {
+    color: #FF3B30;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: large;
+}
+
+.play{
+    color: #28a745;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
 
 .tabela {
     color: #005C6D;
     font-family: 'Roboto Slab';
     border: 1px solid #e0e0e0;
     border-collapse: collapse;
-    width: 100%; /* Mantido em 100% para ocupar toda a largura disponível */
-    
-    /* ADICIONADO: Define uma cor de fundo sólida e válida para a tabela */
-    background-color: #faf9f993; 
+    width: 100%;
 }
-
-
-
-/* .tabela tr {
-    display: flex;
-} */
 
 .tabela th,
 .tabela td {
@@ -48,17 +59,20 @@
     border-bottom: 1px solid #e0e0e0;
 }
 
-.tabela tr:last-child td{
+.tabela tr:last-child td {
     border: none;
 }
 
 .divisao {
     background-image: url("https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/divisor.svg");
     background-position: left center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100%;
+    margin-left: 30%;
+    width: 70%;
     height: 15px;
     display: inline-block;
     margin-bottom: 30px;
+}
+
+.content h1 {
+    margin-left: 31%;
 }

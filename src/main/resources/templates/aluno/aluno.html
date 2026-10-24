@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon"
         href="https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/favicon.svg">
+    <script src="https://kit.fontawesome.com/df511449c7.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/aluno.css}">
     <title>Aluno</title>
@@ -49,6 +50,7 @@
                             <th>Quantidade de Tentativas</th>
                             <th>Renda Familiar</th>
                             <th>Semestre Atual</th>
+                            <th>Ativo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,6 +66,30 @@
                             <td th:text="${aluno.qtTentativasVestibular}"></td>
                             <td th:text="${aluno.rendaFamiliar}"></td>
                             <td th:text="${aluno.semestreAtual}"></td>
+                            <td th:text="${aluno.ativo} ? 'Sim' : 'Não'"></td>
+                            <td>
+                                <form th:action="@{/api/aluno/{ra}/ativar(ra=${aluno.ra})}" method="post">
+
+                                    <button type="submit" class="icon"
+                                        th:title="${aluno.ativo} ? 'Desativar' : 'Ativar'">
+
+                                        <i class="fa-solid" th:classappend="${aluno.ativo}
+               ? 'fa-pause'
+               : 'fa-play play'"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form th:action="@{/api/aluno/{ra}/deletar(ra=${aluno.ra})}" method="post"
+                                    onsubmit="excluirAluno(event, this)">
+
+                                    <input type="hidden" name="_method" value="DELETE">
+
+                                    <button type="submit" class="icon" title="Excluir">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -72,6 +98,8 @@
             <hr class="separador">
         </div>
     </div>
+
+    <script src="/js/script.js"></script>
 </body>
 
 </html>
