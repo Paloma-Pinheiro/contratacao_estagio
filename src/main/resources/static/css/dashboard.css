@@ -10,11 +10,13 @@ body {
     overflow: hidden;
 }
 
+
+
 #conteiner {
     display: flex;
 }
 
-#header {
+.menu {
     float: left;
     width: 20%;
     height: 100%;
@@ -58,7 +60,7 @@ body {
     font-family: 'Roboto Slab'
 }
 
-#menulateral {
+.cadastros {
     width: 100%;
     max-width: 300px;
     margin-top: 20px;
@@ -69,15 +71,15 @@ body {
     list-style: none;
 }
 
-#menulateral li {
+.cadastros li {
     border-bottom: solid 1px #e9e9e9;
 }
 
-#menulateral li:last-child {
+.cadastros li:last-child {
     border-bottom: 0;
 }
 
-#menulateral li a {
+.cadastros li a {
     width: 100%;
     color: #666;
     padding: 20px;
@@ -90,11 +92,11 @@ body {
     box-sizing: border-box;
 }
 
-#menulateral li a:hover {
+.cadastros li a:hover {
     background: #e9e9e9;
 }
 
-#content {
+.content {
     margin-left: auto;
     width: 65%;
     height: 1000px;
@@ -102,6 +104,29 @@ body {
     background-color: transparent;
     overflow-y: auto;
     padding: 20px;
+}
+
+.content p {
+    margin-bottom: 40px;
+    font-family: "Roboto Slab", Sans-serif;
+    color: #005C6D;
+}
+
+.content h1 {
+    font-family: "Roboto Slab", Sans-serif;
+    color: #005C6D;
+    font-size: 36px;
+    font-weight: 400;
+    margin: 0;
+    margin-top: 0px;
+    margin-top: 30px;
+}
+
+.separador {
+    width: 100%;
+    margin-top: 28px;
+    margin-bottom: 28px;
+    border: solid 1px #DADADA;
 }
 
 .data {
@@ -133,4 +158,38 @@ body {
     height: 15px;
     display: inline-block;
     margin-bottom: 30px;
+}
+
+.kpi-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.kpi-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.kpi-titulo span {
+    font-family: 'Roboto Slab';
+    font-weight: 500;
+    font-size: 20px;
+    color: #005C6D;
+}
+
+.lote1,
+.lote2 {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.lote1 p,
+.lote2 p {
+    font-family: 'Roboto Slab';
+    color: #005C6D;
 }

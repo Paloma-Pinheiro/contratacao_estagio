@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html xmlns:th="http://www.thymeleaf.org">
+
 
 <head>
     <meta charset="UTF-8">
@@ -15,7 +16,7 @@
 
 <body>
     <div id="conteiner">
-        <div id="header">
+        <div class="menu">
             <div class="img">
                 <!-- <div class="logo"></div> -->
                 <img src="/img/logo-cps-2022.svg" alt="" class="logo">
@@ -23,17 +24,43 @@
             <div class="titulo">
                 <h1>Dashboard</h1>
             </div>
-            <ul id="menulateral">
-                <li><a href="">Aluno</a></li>
+            <ul class="cadastros">
+                <li><a href="">Início</a></li>
+                <li><a th:href="@{/aluno}">Aluno</a></li>
                 <li><a href="">Empresa</a></li>
                 <li><a href="">Contratos</a></li>
             </ul>
         </div>
-        <div id="content">
-            <div class="data">
-                <h1>Dados cadastrados</h1>
-                <span class="divisao"></span>
+        <div class="content">
+            <h1>Visão Geral</h1>
+            <span class="divisao"></span>
+
+            <p>Resumo dos cadastros de alunos, empresas e contratos de estágio.</p>
+
+            <div class="kpi-container">
+                <div class="lote1">
+                    <div class="kpi-card">
+                        <div class="kpi-titulo"><span>Alunos ativos</span></div>
+                        <p th:text="${alunosAtivos}"></p>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-titulo"><span>Contratos ativos</span></div>
+                        <p th:text="${contratosAtivos}"></p>
+                    </div>
+                </div>
+                <div class="lote2">
+                    <div class="kpi-card">
+                        <div class="kpi-titulo"><span>Empresas ativas</span></div>
+                        <p th:text="${empresasAtivas}"></p>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-titulo"><span>Contratos próximos do encerramento</span></div>
+                        <p th:text="${contratosVencendo}"></p>
+                    </div>
+                </div>
             </div>
+
+            <hr class="separador">
         </div>
     </div>
 </body>

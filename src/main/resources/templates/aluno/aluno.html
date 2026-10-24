@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon"
+        href="https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/favicon.svg">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/aluno.css}">
+    <title>Aluno</title>
+</head>
+
+<body>
+    <div id="conteiner">
+        <div class="menu">
+            <div class="img">
+                <!-- <div class="logo"></div> -->
+                <img src="/img/logo-cps-2022.svg" alt="" class="logo">
+            </div>
+            <div class="titulo">
+                <h1>Dashboard</h1>
+            </div>
+            <ul class="cadastros">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a href="">Aluno</a></li>
+                <li><a href="">Empresa</a></li>
+                <li><a href="">Contratos</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <h1>Aluno</h1>
+            <span class="divisao"></span>
+
+            <p>Consulte os alunos cadastrados e suas informações acadêmicas e de perfil.</p>
+
+            <div class="tabela-container">
+                <table class="tabela">
+                    <thead>
+                        <tr>
+                            <th>RA</th>
+                            <th>Ano de Ingresso</th>
+                            <th>Curso</th>
+                            <th>Etnia</th>
+                            <th>Faixa Etária</th>
+                            <th>Gênero</th>
+                            <th>Modalidade de Ingresso</th>
+                            <th>PCD</th>
+                            <th>Quantidade de Tentativas</th>
+                            <th>Renda Familiar</th>
+                            <th>Semestre Atual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="aluno : ${listarUsuarios}">
+                            <td th:text="${aluno.ra}"></td>
+                            <td th:text="${aluno.anoIngresso}"></td>
+                            <td th:text="${aluno.curso}"></td>
+                            <td th:text="${aluno.etnia}"></td>
+                            <td th:text="${aluno.faixaEtaria}"></td>
+                            <td th:text="${aluno.genero}"></td>
+                            <td th:text="${aluno.modalidadeIngresso}"></td>
+                            <td th:text="${aluno.pcd} ? 'Sim' : 'Não'"></td>
+                            <td th:text="${aluno.qtTentativasVestibular}"></td>
+                            <td th:text="${aluno.rendaFamiliar}"></td>
+                            <td th:text="${aluno.semestreAtual}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr class="separador">
+        </div>
+    </div>
+</body>
+
+</html>

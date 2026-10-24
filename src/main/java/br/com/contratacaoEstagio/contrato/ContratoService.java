@@ -38,7 +38,7 @@ public class ContratoService {
         contrato.setEmpresa(dadosAtualizados.getEmpresa());
         contrato.setHorario(dadosAtualizados.getHorario());
         contrato.setModalidade(dadosAtualizados.getModalidade());
-
+        contrato.setAtivo(dadosAtualizados.isAtivo());
         return contratoRepository.save(contrato);
     }
 

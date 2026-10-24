@@ -47,7 +47,8 @@ public class Contrato {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
-    
+
+    private boolean ativo;
     public long calcularDuracao(){
         if(dataInicio == null || dataTermino == null){
             throw new IllegalStateException("É necessário informas as datas de início e termino.");

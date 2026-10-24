@@ -26,4 +26,9 @@ public class Aluno{
     private String modalidadeIngresso;
     private boolean pcd;
     private boolean ativo = true;
+    
+    public void addAtribute(String string, long count) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addAtribute'");
+    }
 }
