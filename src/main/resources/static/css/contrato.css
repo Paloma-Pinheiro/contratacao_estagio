@@ -112,3 +112,22 @@
         width: 100%;
     }
 }
+
+.status {
+    display: inline-block;
+    min-width: 60px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.status.ativo {
+    color: #217a38;
+    background-color: #dff3e4;
+}
+
+.status.inativo {
+    color: #a12622;
+    background-color: #fde1df;
+}

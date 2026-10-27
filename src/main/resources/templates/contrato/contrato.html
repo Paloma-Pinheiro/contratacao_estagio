@@ -1,125 +1,151 @@
 
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" type="image/x-icon"
-        href="https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/favicon.svg">
-
-    <script src="https://kit.fontawesome.com/df511449c7.js"
-        crossorigin="anonymous"></script>
+    <title>Contratos de Estágio</title>
 
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/contrato.css}">
 
-    <title>Contratos</title>
+    <script src="https://kit.fontawesome.com/df511449c7.js"
+            crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div id="conteiner">
 
-        <!-- Menu lateral -->
-        <div class="menu">
+<div id="conteiner">
 
-            <div class="img">
-                <img src="/img/logo-cps-2022.svg"
-                    alt="Logo Centro Paula Souza"
-                    class="logo">
-            </div>
+    <!-- Menu lateral -->
+    <aside class="menu">
 
-            <div class="titulo">
-                <h1>Dashboard</h1>
-            </div>
+        <div class="img">
+            <img th:src="@{/img/logo-cps-2022.svg}"
+                alt="Logo CPS" 
+                class="logo">
+        </div>
 
-            <ul class="cadastros">
-                <li><a th:href="@{/}">Início</a></li>
-                <li><a th:href="@{/aluno}">Aluno</a></li>
-                <li><a th:href="@{/empresa}">Empresa</a></li>
-                <li><a th:href="@{/contrato}">Contratos</a></li>
+        <div class="titulo">
+            <h1>Estágios</h1>
+        </div>
+
+        <nav class="cadastros">
+            <ul>
+                <li>
+                    <a th:href="@{/}">Início</a>
+                </li>
+                <li>
+                    <a th:href="@{/aluno}">Alunos</a>
+                </li>
+                <li>
+                    <a th:href="@{/empresa}">Empresas</a>
+                </li>
+                <li>
+                    <a th:href="@{/contratos}">Contratos</a>
+                </li>
             </ul>
+        </nav>
+
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="content">
+
+        <h1>Contratos</h1>
+
+        <div class="divisao"></div>
+
+        <p>
+            Consulte os contratos de estágio cadastrados,
+            suas informações e sua situação atual.
+        </p>
+
+        <!-- Tabela de contratos -->
+        <div class="tabela-container">
+
+            <table class="tabela">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Aluno (RA)</th>
+                        <th>Empresa</th>
+                        <th>Área</th>
+                        <th>Cargo</th>
+                        <th>Modalidade</th>
+                        <th>Horário</th>
+                        <th>Carga Horária</th>
+                        <th>Data de Início</th>
+                        <th>Data de Término</th>
+                        <th>Ativo</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <!-- Uma linha para cada contrato -->
+                    <tr th:each="contrato : ${listarContratos}">
+
+                        <td th:text="${contrato.id}">1</td>
+
+                        <td th:text="${contrato.aluno.ra}">RA do aluno</td>
+
+                        <td th:text="${contrato.empresa.razaoSocial}">
+                            Nome da empresa
+                        </td>
+
+                        <td th:text="${contrato.area}">Área</td>
+
+                        <td th:text="${contrato.cargo}">Cargo</td>
+
+                        <td th:text="${contrato.modalidade}">
+                            Modalidade
+                        </td>
+
+                        <td th:text="${contrato.horario}">Horário</td>
+
+                        <td th:text="${contrato.cargaHoraria} + 'h'">
+                            Carga horária
+                        </td>
+
+                        <td th:text="${#temporals.format(contrato.dataInicio, 'dd/MM/yyyy')}">
+                            Data de início
+                        </td>
+
+                        <td th:text="${#temporals.format(contrato.dataTermino, 'dd/MM/yyyy')}">
+                            Data de término
+                        </td>
+
+                        <td>
+                            <span th:if="${contrato.ativo}" class="status ativo">
+                                Ativo
+                            </span>
+
+                            <span th:unless="${contrato.ativo}" class="status inativo">
+                                Inativo
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    <!-- Exibido quando não há contratos -->
+                    <tr th:if="${#lists.isEmpty(listarContratos)}">
+                        <td colspan="11" class="sem-registros">
+                            Nenhum contrato cadastrado.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
 
         </div>
 
-        <!-- Conteúdo principal -->
-        <div class="content">
+    </main>
 
-            <h1>Contratos</h1>
-
-            <span class="divisao"></span>
-
-            <p>
-                Consulte os contratos de estágio cadastrados,
-                suas informações e sua situação atual.
-            </p>
-
-            <!-- Tabela de contratos -->
-            <div class="tabela-container">
-
-                <table class="tabela">
-
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Aluno (RA)</th>
-                            <th>Empresa</th>
-                            <th>Área</th>
-                            <th>Cargo</th>
-                            <th>Modalidade</th>
-                            <th>Horário</th>
-                            <th>Carga Horária</th>
-                            <th>Data de Início</th>
-                            <th>Data de Término</th>
-                            <th>Ativo</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        <!-- Linha demonstrativa: será substituída
-                             pelos dados reais na integração -->
-                        <tr>
-                            <td>1</td>
-                            <td>Exemplo de RA</td>
-                            <td>Empresa Exemplo</td>
-                            <td>Tecnologia</td>
-                            <td>Estagiário</td>
-                            <td>Presencial</td>
-                            <td>09h às 16h</td>
-                            <td>30h</td>
-                            <td>01/10/2026</td>
-                            <td>30/09/2027</td>
-                            <td>Sim</td>
-
-                            <td class="acoes">
-                                <button type="button"
-                                    class="icon editar"
-                                    title="Editar contrato">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-
-                                <button type="button"
-                                    class="icon excluir"
-                                    title="Excluir contrato">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <hr class="separador">
-
-        </div>
-
-    </div>
+</div>
 
 </body>
 </html>
