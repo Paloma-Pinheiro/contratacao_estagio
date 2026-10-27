@@ -1,0 +1,114 @@
+
+/* Área principal */
+.content {
+    width: 77%;
+}
+
+/* Título */
+.content h1 {
+    margin-left: 31%;
+}
+
+/* Divisória decorativa */
+.divisao {
+    background-image: url("https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/divisor.svg");
+    background-position: left center;
+    background-repeat: no-repeat;
+    margin-left: 30%;
+    width: 70%;
+    height: 15px;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+/* Área que envolve a tabela */
+.tabela-container {
+    width: 100%;
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+    display: block;
+    overflow-x: auto;
+}
+
+/* Tabela */
+.tabela {
+    color: #005C6D;
+    font-family: 'Roboto Slab', serif;
+    border: 1px solid #e0e0e0;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* Cabeçalho e células */
+.tabela th,
+.tabela td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Cabeçalho */
+.tabela th {
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+/* Conteúdo das células */
+.tabela td {
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+/* Última linha */
+.tabela tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Ações */
+.acoes {
+    white-space: nowrap !important;
+}
+
+/* Botões de ação */
+.icon {
+    color: #FF3B30;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: large;
+    margin: 0 4px;
+    transition: transform 0.2s ease;
+}
+
+/* Efeito ao passar o mouse */
+.icon:hover {
+    transform: scale(1.1);
+}
+
+/* Ícone de edição */
+.editar {
+    color: #005C6D;
+}
+
+/* Ícone de exclusão */
+.excluir {
+    color: #FF3B30;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 768px) {
+    .content {
+        width: 95%;
+    }
+
+    .content h1 {
+        margin-left: 0;
+    }
+
+    .divisao {
+        margin-left: 0;
+        width: 100%;
+    }
+}

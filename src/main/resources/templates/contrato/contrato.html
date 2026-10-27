@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon"
+        href="https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/favicon.svg">
+
+    <script src="https://kit.fontawesome.com/df511449c7.js"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/contrato.css}">
+
+    <title>Contratos</title>
+</head>
+
+<body>
+    <div id="conteiner">
+
+        <!-- Menu lateral -->
+        <div class="menu">
+
+            <div class="img">
+                <img src="/img/logo-cps-2022.svg"
+                    alt="Logo Centro Paula Souza"
+                    class="logo">
+            </div>
+
+            <div class="titulo">
+                <h1>Dashboard</h1>
+            </div>
+
+            <ul class="cadastros">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/aluno}">Aluno</a></li>
+                <li><a th:href="@{/empresa}">Empresa</a></li>
+                <li><a th:href="@{/contrato}">Contratos</a></li>
+            </ul>
+
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="content">
+
+            <h1>Contratos</h1>
+
+            <span class="divisao"></span>
+
+            <p>
+                Consulte os contratos de estágio cadastrados,
+                suas informações e sua situação atual.
+            </p>
+
+            <!-- Tabela de contratos -->
+            <div class="tabela-container">
+
+                <table class="tabela">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Aluno (RA)</th>
+                            <th>Empresa</th>
+                            <th>Área</th>
+                            <th>Cargo</th>
+                            <th>Modalidade</th>
+                            <th>Horário</th>
+                            <th>Carga Horária</th>
+                            <th>Data de Início</th>
+                            <th>Data de Término</th>
+                            <th>Ativo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <!-- Linha demonstrativa: será substituída
+                             pelos dados reais na integração -->
+                        <tr>
+                            <td>1</td>
+                            <td>Exemplo de RA</td>
+                            <td>Empresa Exemplo</td>
+                            <td>Tecnologia</td>
+                            <td>Estagiário</td>
+                            <td>Presencial</td>
+                            <td>09h às 16h</td>
+                            <td>30h</td>
+                            <td>01/10/2026</td>
+                            <td>30/09/2027</td>
+                            <td>Sim</td>
+
+                            <td class="acoes">
+                                <button type="button"
+                                    class="icon editar"
+                                    title="Editar contrato">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+
+                                <button type="button"
+                                    class="icon excluir"
+                                    title="Excluir contrato">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <hr class="separador">
+
+        </div>
+
+    </div>
+
+</body>
+</html>
