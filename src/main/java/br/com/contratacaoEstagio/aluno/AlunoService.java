@@ -26,6 +26,7 @@ public class AlunoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encotrado."));
 
         aluno.setAnoIngresso(dadosAtualizados.getAnoIngresso());
+        aluno.setNome(dadosAtualizados.getNome());
         aluno.setAtivo(dadosAtualizados.isAtivo());
         aluno.setCurso(dadosAtualizados.getCurso());
         aluno.setEtnia(dadosAtualizados.getEtnia());

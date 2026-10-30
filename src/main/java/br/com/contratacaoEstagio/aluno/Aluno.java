@@ -15,6 +15,7 @@ import lombok.Setter;
 public class Aluno{
     @Id 
     private String ra;
+    private String nome;
     private String curso;
     private int anoIngresso;
     private int semestreAtual;

@@ -1,78 +1,395 @@
 .content {
     width: 77%;
+    overflow-x: hidden;
+}
+
+.content h1 {
+    margin-left: 31%;
+}
+
+.content p {
+    margin-bottom: 20px;
+}
+
+.divisao {
+    display: inline-block;
+    width: 70%;
+    height: 15px;
+    margin-left: 30%;
+    margin-bottom: 30px;
+
+    background-image: url("https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/divisor.svg");
+    background-position: left center;
+    background-repeat: no-repeat;
+}
+
+.botao-container {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0;
+}
+
+.botao-cadastro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px 20px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: #005C6D;
+    color: #fff;
+
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.botao-cadastro:hover {
+    background-color: #00788d;
 }
 
 .tabela-container {
-    width: 100%;
-    /* overflow-x: auto; */
-    margin-top: 20px;
-    border: 1px solid #e0e0e0;
     display: block;
+    width: 100%;
+    margin-top: 20px;
+
     overflow-x: auto;
+
+    border: 1px solid #e0e0e0;
+}
+
+.tabela {
+    width: 100%;
+
+    border-collapse: collapse;
+    border: 1px solid #e0e0e0;
+
+    color: #005C6D;
+    font-family: "Roboto Slab", serif;
+}
+
+.tabela th,
+.tabela td {
+    padding: 10px 12px;
+
+    text-align: center;
+    vertical-align: middle;
+
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tabela th {
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.tabela td {
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.tabela tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .icon {
-    color: #FF3B30;
     border: none;
     outline: none;
-    cursor: pointer;
-    background-color: transparent;
-    font-size: large;
-}
 
-.play{
-    color: #28a745;
+    background: transparent;
+
+    color: #FF3B30;
+    font-size: large;
+
+    cursor: pointer;
+
+    transition: .2s;
 }
 
 .icon:hover {
     transform: scale(1.1);
 }
 
-.tabela {
-    color: #005C6D;
-    font-family: 'Roboto Slab';
-    border: 1px solid #e0e0e0;
-    border-collapse: collapse;
+.play {
+    color: #28a745;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: grid;
+    place-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.overlay.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    font-family: "Roboto Slab", serif;
+    position: absolute;
+    width: 90%;
+    max-width: 550px;
+    height: auto;
+    max-height: 85vh;
+    overflow-y: auto;
+    aspect-ratio: 1 / 1;
+    padding: 1.5rem;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100px);
+    transition: transform 0.4s, opacoty 0.4s, visibility 0.4s;
+}
+
+.modal.ativo {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.modal.saiu {
+    transform: translateX(-100px);
+}
+
+:root {
+    --cor-principal: #005C6D;
+    --cor-principal-clara: #007a94;
+    --cor-borda: #c9d6da;
+    --cor-fundo-campo: #ffffff;
+    --cor-texto: #2b3a3f;
+}
+
+.titulo-cadastro {
+    font-family: "Roboto Slab", serif;
     width: 100%;
-}
-
-.tabela th,
-.tabela td {
     text-align: center;
-    vertical-align: middle;
-    padding: 10px 5px;
-    white-space: normal;
-    word-wrap: break-word;
+    color: var(--cor-principal);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
 }
 
-.tabela th {
-    white-space: nowrap;
-    padding: 10px 12px;
-    border-bottom: 1px solid #e0e0e0;
-    /* font-size: 15px; */
+.dados-cadastro {
+    font-family: "Roboto Slab", serif;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 24px;
+    padding: 20px 24px;
 }
 
-.tabela td {
-    padding: 10px 12px;
+.campo {
+    flex: 1 1 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Rótulos */
+.campo label,
+.campo span {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.campo span {
+    text-align: center;
+}
+
+/* Inputs e selects */
+.campo input[type="text"],
+.campo input[type="number"],
+.campo select {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--cor-texto);
+    background: var(--cor-fundo-campo);
+    border: 1.5px solid var(--cor-borda);
+    border-radius: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover */
+.campo input:hover,
+.campo select:hover {
+    border-color: var(--cor-principal-clara);
+}
+
+/* Foco */
+.campo input:focus,
+.campo select:focus {
+    border-color: var(--cor-principal);
+    box-shadow: 0 0 0 3px rgba(0, 92, 109, 0.15);
+}
+
+/* Campo desabilitado (ex: Ano de Ingresso) */
+.campo input:disabled {
+    background: #eef3f4;
+    color: #8a9a9f;
+    cursor: not-allowed;
+}
+
+/* Select com seta personalizada */
+.campo select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    padding-right: 36px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='none' stroke='%23005C6D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 1.5l5 5 5-5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+
+/* Radios (PCD) */
+.campo input[type="radio"] {
+    accent-color: var(--cor-principal);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.campo .opcoes-pcd:has(.invalido) {
+    outline: 1.5px solid #c0392b;
+    outline-offset: 2px;
+    border-radius: 10px;
+}
+
+.campo input[type="radio"].invalido {
+    accent-color: #c0392b;
+}
+
+/* Centraliza o grupo de radios do PCD */
+.campo .opcoes-pcd {
+    display: flex;
     justify-content: center;
+    gap: 16px;
+    height: 40px;
     align-items: center;
-    border-bottom: 1px solid #e0e0e0;
 }
 
-.tabela tr:last-child td {
+/* Remove as setinhas do input number (opcional) */
+.campo input[type="number"]::-webkit-outer-spin-button,
+.campo input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.campo input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* .campo span, input{ */
+/* display: block; */
+/* } */
+
+.area-botao {
+    display: flex;
+    justify-content: center;
+    /* centraliza horizontalmente */
+    margin-top: 24px;
+}
+
+.continuar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    /* totalmente redondo */
     border: none;
+    background: #005a6e;
+    /* use a cor do seu título */
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+
+    display: flex;
+    /* centraliza o ícone dentro */
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.divisao {
-    background-image: url("https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/divisor.svg");
-    background-position: left center;
-    margin-left: 30%;
-    width: 70%;
-    height: 15px;
-    display: inline-block;
-    margin-bottom: 30px;
+.continuar:hover {
+    background: #007a94;
+    transform: scale(1.08);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
-.content h1 {
-    margin-left: 31%;
+.continuar:active {
+    transform: scale(0.96);
+}
+
+.continuar:focus-visible {
+    outline: 3px solid rgba(0, 122, 148, 0.4);
+    outline-offset: 2px;
+}
+
+.campo .msg-erro {
+    color: #c0392b;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.campo input.invalido,
+.campo select.invalido {
+    border-color: #c0392b;
+}
+
+.campo input.invalido:focus,
+.campo select.invalido:focus {
+    border-color: #c0392b;
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15);
+}
+
+.fechar {
+    position: sticky;
+    top: 0;
+    float: right;
+    z-index: 2;
+
+    width: 32px;
+    height: 32px;
+    margin: -4px -4px 0 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #8a9a9f;
+    font-size: 16px;
+    cursor: pointer;
+
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.fechar:hover {
+    background: #e8eef0;
+    color: var(--cor-principal);
+}
+
+.fechar:focus-visible {
+    outline: 3px solid rgba(0, 122, 148, 0.4);
+    outline-offset: 2px;
 }

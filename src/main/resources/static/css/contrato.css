@@ -21,6 +21,10 @@
     margin-bottom: 30px;
 }
 
+li{
+    list-style-type: none;
+}
+
 /* Área que envolve a tabela */
 .tabela-container {
     width: 100%;
