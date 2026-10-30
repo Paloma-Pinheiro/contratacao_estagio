@@ -42,7 +42,7 @@ public class ContratoController {
 
     @GetMapping
     public ResponseEntity<List<Contrato>> listarTodos() {
-        return ResponseEntity.ok(contratoService.ListarTodos());
+        return ResponseEntity.ok(contratoService.listarTodos());
     }
 
     @DeleteMapping("/{id}")

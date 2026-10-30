@@ -42,7 +42,7 @@ public class ContratoService {
         return contratoRepository.save(contrato);
     }
 
-    public List<Contrato> ListarTodos() {
+    public List<Contrato> listarTodos() {
         return contratoRepository.findAll();
     }
 

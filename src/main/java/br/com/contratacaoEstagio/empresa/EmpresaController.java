@@ -37,8 +37,8 @@ public class EmpresaController {
     }
 
     @GetMapping 
-    public ResponseEntity<List<Empresa>> ListarTodos(){
-        return ResponseEntity.ok(empresaService.ListarTodos());
+    public ResponseEntity<List<Empresa>> listarTodos(){
+        return ResponseEntity.ok(empresaService.listarTodos());
     }
 
     @DeleteMapping("/{id}")

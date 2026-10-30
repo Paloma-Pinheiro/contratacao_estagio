@@ -29,7 +29,7 @@ public class EmpresaService {
         return empresaRepository.save(empresa);
     }
 
-    public List<Empresa> ListarTodos(){
+    public List<Empresa> listarTodos(){
         return empresaRepository.findAll();
     }
 
