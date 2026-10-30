@@ -1,151 +1,332 @@
-''
+
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Contratos de Estágio</title>
+    <title>Contratos</title>
 
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/contrato.css}">
 
     <script src="https://kit.fontawesome.com/df511449c7.js"
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
 
-<div id="conteiner">
+    <div id="conteiner">
 
-    <!-- Menu lateral -->
-    <aside class="menu">
+        <!-- MENU LATERAL -->
+        <nav class="menu">
 
-        <div class="img">
-            <img th:src="@{/img/logo-cps-2022.svg}"
-                alt="Logo CPS" 
-                class="logo">
-        </div>
+            <div class="img">
+                <img class="logo"
+                    th:src="@{/img/logo-cps-2022.svg}"
+                    alt="Logo CPS">
+            </div>
 
-        <div class="titulo">
-            <h1>Estágios</h1>
-        </div>
+            <div class="titulo">
+                <h1>Cadastros</h1>
+            </div>
 
-        <nav class="cadastros">
-            <ul>
-                <li>
-                    <a th:href="@{/}">Início</a>
-                </li>
-                <li>
-                    <a th:href="@{/aluno}">Alunos</a>
-                </li>
-                <li>
-                    <a th:href="@{/empresa}">Empresas</a>
-                </li>
-                <li>
-                    <a th:href="@{/contratos}">Contratos</a>
-                </li>
+            <ul class="cadastros">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/aluno}">Aluno</a></li>
+                <li><a th:href="@{/empresa}">Empresa</a></li>
+                <li><a th:href="@{/contratos}">Contratos</a></li>
             </ul>
+
         </nav>
 
-    </aside>
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="content">
 
-    <!-- Conteúdo principal -->
-    <main class="content">
+            <h1>Contratos</h1>
 
-        <h1>Contratos</h1>
+            <div class="divisao"></div>
 
-        <div class="divisao"></div>
+            <p>
+                Consulte os contratos de estágio cadastrados,
+                suas informações e sua situação atual.
+            </p>
 
-        <p>
-            Consulte os contratos de estágio cadastrados,
-            suas informações e sua situação atual.
-        </p>
+            <!-- BOTÃO DE CADASTRO -->
+            <div class="botao-container">
+                <button type="button"
+                    id="abrir"
+                    class="botao-cadastro">
+                    Cadastrar contrato
+                </button>
+            </div>
 
-        <!-- Tabela de contratos -->
-        <div class="tabela-container">
+            <!-- TABELA -->
+            <div class="tabela-container">
 
-            <table class="tabela">
+                <table class="tabela">
 
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Aluno (RA)</th>
-                        <th>Empresa</th>
-                        <th>Área</th>
-                        <th>Cargo</th>
-                        <th>Modalidade</th>
-                        <th>Horário</th>
-                        <th>Carga Horária</th>
-                        <th>Data de Início</th>
-                        <th>Data de Término</th>
-                        <th>Ativo</th>
-                    </tr>
-                </thead>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Aluno (RA)</th>
+                            <th>Empresa</th>
+                            <th>Área</th>
+                            <th>Cargo</th>
+                            <th>Modalidade</th>
+                            <th>Horário</th>
+                            <th>Carga Horária</th>
+                            <th>Data de Início</th>
+                            <th>Data de Término</th>
+                            <th>Ativo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
+                    <tbody>
 
-                    <!-- Uma linha para cada contrato -->
-                    <tr th:each="contrato : ${listarContratos}">
+                        <tr th:each="contrato : ${listarContratos}">
 
-                        <td th:text="${contrato.id}">1</td>
+                            <td th:text="${contrato.id}"></td>
 
-                        <td th:text="${contrato.aluno.ra}">RA do aluno</td>
+                            <td th:text="${contrato.aluno.ra}"></td>
 
-                        <td th:text="${contrato.empresa.razaoSocial}">
-                            Nome da empresa
-                        </td>
+                            <td th:text="${contrato.empresa.razaoSocial}"></td>
 
-                        <td th:text="${contrato.area}">Área</td>
+                            <td th:text="${contrato.area}"></td>
 
-                        <td th:text="${contrato.cargo}">Cargo</td>
+                            <td th:text="${contrato.cargo}"></td>
 
-                        <td th:text="${contrato.modalidade}">
-                            Modalidade
-                        </td>
+                            <td th:text="${contrato.modalidade}"></td>
 
-                        <td th:text="${contrato.horario}">Horário</td>
+                            <td th:text="${contrato.horario}"></td>
 
-                        <td th:text="${contrato.cargaHoraria} + 'h'">
-                            Carga horária
-                        </td>
+                            <td th:text="${contrato.cargaHoraria + 'h'}"></td>
 
-                        <td th:text="${#temporals.format(contrato.dataInicio, 'dd/MM/yyyy')}">
-                            Data de início
-                        </td>
+                            <td th:text="${#temporals.format(contrato.dataInicio, 'dd/MM/yyyy')}"></td>
 
-                        <td th:text="${#temporals.format(contrato.dataTermino, 'dd/MM/yyyy')}">
-                            Data de término
-                        </td>
+                            <td th:text="${#temporals.format(contrato.dataTermino, 'dd/MM/yyyy')}"></td>
 
-                        <td>
-                            <span th:if="${contrato.ativo}" class="status ativo">
-                                Ativo
-                            </span>
+                            <td>
+                                <span class="status"
+                                    th:classappend="${contrato.ativo} ? ' ativo' : ' inativo'"
+                                    th:text="${contrato.ativo} ? 'Ativo' : 'Inativo'">
+                                </span>
+                            </td>
 
-                            <span th:unless="${contrato.ativo}" class="status inativo">
-                                Inativo
-                            </span>
-                        </td>
+                            <!-- AÇÕES -->
+                            <td class="acoes">
 
-                    </tr>
+                                <button type="button"
+                                    class="icon editar"
+                                    title="Editar contrato"
 
-                    <!-- Exibido quando não há contratos -->
-                    <tr th:if="${#lists.isEmpty(listarContratos)}">
-                        <td colspan="11" class="sem-registros">
-                            Nenhum contrato cadastrado.
-                        </td>
-                    </tr>
+                                    th:data-id="${contrato.id}"
+                                    th:data-aluno-ra="${contrato.aluno.ra}"
+                                    th:data-empresa-id="${contrato.empresa.id}"
+                                    th:data-area="${contrato.area}"
+                                    th:data-cargo="${contrato.cargo}"
+                                    th:data-modalidade="${contrato.modalidade}"
+                                    th:data-horario="${contrato.horario}"
+                                    th:data-carga-horaria="${contrato.cargaHoraria}"
+                                    th:data-data-inicio="${contrato.dataInicio}"
+                                    th:data-data-termino="${contrato.dataTermino}"
+                                    th:data-ativo="${contrato.ativo}"
 
-                </tbody>
+                                    onclick="editarContrato(this)">
 
-            </table>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+
+                                <button type="button"
+                                    class="icon excluir"
+                                    title="Excluir contrato"
+                                    th:data-id="${contrato.id}"
+                                    onclick="excluirContrato(this)">
+
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <!-- MENSAGEM QUANDO NÃO EXISTIREM CONTRATOS -->
+                        <tr th:if="${#lists.isEmpty(listarContratos)}">
+                            <td colspan="12">
+                                Nenhum contrato cadastrado.
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- MODAL -->
+    <div class="overlay" id="overlay">
+
+        <div class="modal" id="modal">
+
+            <button type="button"
+                class="fechar"
+                id="fechar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h2 class="titulo-cadastro" id="tituloModal">
+                Cadastrar contrato
+            </h2>
+
+            <form id="formContrato">
+
+                <input type="hidden" id="contratoId">
+
+                <div class="dados-cadastro" id="dados">
+
+                    <!-- ALUNO -->
+                    <div class="campo">
+                        <label for="aluno">Aluno</label>
+
+                        <select id="aluno" required>
+                            <option value="">Selecione um aluno</option>
+
+                            <option th:each="aluno : ${listarAlunos}"
+                                th:value="${aluno.ra}"
+                                th:text="${aluno.ra + ' - ' + aluno.nome}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- EMPRESA -->
+                    <div class="campo">
+                        <label for="empresa">Empresa</label>
+
+                        <select id="empresa" required>
+                            <option value="">Selecione uma empresa</option>
+
+                            <option th:each="empresa : ${listarEmpresas}"
+                                th:value="${empresa.id}"
+                                th:text="${empresa.razaoSocial}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- ÁREA -->
+                    <div class="campo">
+                        <label for="area">Área</label>
+
+                        <input type="text"
+                            id="area"
+                            placeholder="Ex.: Tecnologia"
+                            required>
+                    </div>
+
+                    <!-- CARGO -->
+                    <div class="campo">
+                        <label for="cargo">Cargo</label>
+
+                        <input type="text"
+                            id="cargo"
+                            placeholder="Ex.: Estagiário de TI"
+                            required>
+                    </div>
+
+                    <!-- MODALIDADE -->
+                    <div class="campo">
+                        <label for="modalidade">Modalidade</label>
+
+                        <select id="modalidade" required>
+                            <option value="">Selecione</option>
+                            <option value="PRESENCIAL">Presencial</option>
+                            <option value="HIBRIDO">Híbrido</option>
+                            <option value="REMOTO">Remoto</option>
+                        </select>
+                    </div>
+
+                    <!-- HORÁRIO -->
+                    <div class="campo">
+                        <label for="horario">Horário</label>
+
+                        <input type="text"
+                            id="horario"
+                            placeholder="Ex.: 08:00 às 14:00"
+                            required>
+                    </div>
+
+                    <!-- CARGA HORÁRIA -->
+                    <div class="campo">
+                        <label for="cargaHoraria">Carga horária (horas)</label>
+
+                        <input type="number"
+                            id="cargaHoraria"
+                            min="1"
+                            max="44"
+                            placeholder="Ex.: 6"
+                            required>
+                    </div>
+
+                    <!-- DATA DE INÍCIO -->
+                    <div class="campo">
+                        <label for="dataInicio">Data de início</label>
+
+                        <input type="date"
+                            id="dataInicio"
+                            required>
+                    </div>
+
+                    <!-- DATA DE TÉRMINO -->
+                    <div class="campo">
+                        <label for="dataTermino">Data de término</label>
+
+                        <input type="date"
+                            id="dataTermino"
+                            required>
+                    </div>
+
+                    <!-- SITUAÇÃO -->
+                    <div class="campo campo-status">
+                        <label for="ativo">Situação do contrato</label>
+
+                        <select id="ativo" required>
+                            <option value="true">Ativo</option>
+                            <option value="false">Inativo</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div id="mensagemErro" class="mensagem-erro"></div>
+
+                <!-- BOTÕES -->
+                <div class="area-botao">
+
+                    <button type="button"
+                        id="cancelar"
+                        class="continuar">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                        id="salvar"
+                        class="continuar">
+                        Salvar contrato
+                    </button>
+
+                </div>
+
+            </form>
 
         </div>
 
-    </main>
+    </div>
 
-</div>
+    <script th:src="@{/js/contrato.js}"></script>
 
 </body>
 </html>

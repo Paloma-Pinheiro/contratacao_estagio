@@ -1,15 +1,14 @@
 
-/* Área principal */
+/* ÁREA PRINCIPAL */
 .content {
     width: 77%;
 }
 
-/* Título */
 .content h1 {
     margin-left: 31%;
 }
 
-/* Divisória decorativa */
+/* DIVISÓRIA */
 .divisao {
     background-image: url("https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/divisor.svg");
     background-position: left center;
@@ -21,11 +20,34 @@
     margin-bottom: 30px;
 }
 
-li{
+li {
     list-style-type: none;
 }
 
-/* Área que envolve a tabela */
+/* BOTÃO DE CADASTRO */
+.botao-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.botao-cadastro {
+    background-color: #005C6D;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-family: 'Roboto Slab', serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao-cadastro:hover {
+    background-color: #00788d;
+}
+
+/* TABELA */
 .tabela-container {
     width: 100%;
     margin-top: 20px;
@@ -34,7 +56,6 @@ li{
     overflow-x: auto;
 }
 
-/* Tabela */
 .tabela {
     color: #005C6D;
     font-family: 'Roboto Slab', serif;
@@ -43,7 +64,6 @@ li{
     width: 100%;
 }
 
-/* Cabeçalho e células */
 .tabela th,
 .tabela td {
     text-align: center;
@@ -52,31 +72,26 @@ li{
     border-bottom: 1px solid #e0e0e0;
 }
 
-/* Cabeçalho */
 .tabela th {
     white-space: nowrap;
     font-weight: bold;
 }
 
-/* Conteúdo das células */
 .tabela td {
     white-space: normal;
     overflow-wrap: break-word;
 }
 
-/* Última linha */
 .tabela tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* Ações */
+/* AÇÕES */
 .acoes {
     white-space: nowrap !important;
 }
 
-/* Botões de ação */
 .icon {
-    color: #FF3B30;
     border: none;
     outline: none;
     cursor: pointer;
@@ -86,37 +101,19 @@ li{
     transition: transform 0.2s ease;
 }
 
-/* Efeito ao passar o mouse */
 .icon:hover {
     transform: scale(1.1);
 }
 
-/* Ícone de edição */
 .editar {
     color: #005C6D;
 }
 
-/* Ícone de exclusão */
 .excluir {
     color: #FF3B30;
 }
 
-/* Ajuste para telas menores */
-@media (max-width: 768px) {
-    .content {
-        width: 95%;
-    }
-
-    .content h1 {
-        margin-left: 0;
-    }
-
-    .divisao {
-        margin-left: 0;
-        width: 100%;
-    }
-}
-
+/* STATUS */
 .status {
     display: inline-block;
     min-width: 60px;
@@ -134,4 +131,175 @@ li{
 .status.inativo {
     color: #a12622;
     background-color: #fde1df;
+}
+
+/* FUNDO DO MODAL */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.overlay.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* MODAL */
+.modal {
+    position: relative;
+    background-color: #f8f8f8;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: 'Roboto Slab', serif;
+    transform: translateY(-20px);
+    transition: 0.3s;
+}
+
+.overlay.ativo .modal {
+    transform: translateY(0);
+}
+
+.titulo-cadastro {
+    color: #005C6D;
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 25px;
+}
+
+/* CAMPOS DO FORMULÁRIO */
+.dados-cadastro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 45%;
+    min-width: 0;
+}
+
+.campo label {
+    color: #2b3a3f;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px;
+    border: 1px solid #c9d6da;
+    border-radius: 5px;
+    background-color: white;
+    color: #2b3a3f;
+    font-family: 'Roboto Slab', serif;
+    font-size: 13px;
+    outline: none;
+}
+
+.campo input:focus,
+.campo select:focus {
+    border-color: #005C6D;
+}
+
+.campo input.invalido,
+.campo select.invalido {
+    border-color: #FF3B30;
+}
+
+.campo-status {
+    flex-basis: 100%;
+}
+
+/* MENSAGENS */
+.mensagem-erro {
+    color: #a12622;
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+.msg-erro {
+    color: #a12622;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* BOTÕES DO MODAL */
+.area-botao {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.continuar {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #005C6D;
+    color: white;
+    font-family: 'Roboto Slab', serif;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.continuar:hover {
+    background-color: #00788d;
+}
+
+.continuar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* BOTÃO FECHAR */
+.fechar {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    border: none;
+    background: transparent;
+    color: #005C6D;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .content {
+        width: 95%;
+    }
+
+    .content h1 {
+        margin-left: 0;
+    }
+
+    .divisao {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .modal {
+        padding: 25px 18px;
+    }
+
+    .campo {
+        flex-basis: 100%;
+    }
 }
