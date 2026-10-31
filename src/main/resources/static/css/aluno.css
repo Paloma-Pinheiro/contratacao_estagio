@@ -196,7 +196,6 @@
     gap: 6px;
 }
 
-/* Rótulos */
 .campo label,
 .campo span {
     font-size: 14px;
@@ -208,7 +207,6 @@
     text-align: center;
 }
 
-/* Inputs e selects */
 .campo input[type="text"],
 .campo input[type="number"],
 .campo select {
@@ -226,7 +224,6 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Hover */
 .campo input:hover,
 .campo select:hover {
     border-color: var(--cor-principal-clara);
@@ -239,14 +236,12 @@
     box-shadow: 0 0 0 3px rgba(0, 92, 109, 0.15);
 }
 
-/* Campo desabilitado (ex: Ano de Ingresso) */
 .campo input:disabled {
     background: #eef3f4;
     color: #8a9a9f;
     cursor: not-allowed;
 }
 
-/* Select com seta personalizada */
 .campo select {
     appearance: none;
     -webkit-appearance: none;
@@ -257,7 +252,6 @@
     background-position: right 12px center;
 }
 
-/* Radios (PCD) */
 .campo input[type="radio"] {
     accent-color: var(--cor-principal);
     width: 16px;
@@ -275,7 +269,6 @@
     accent-color: #c0392b;
 }
 
-/* Centraliza o grupo de radios do PCD */
 .campo .opcoes-pcd {
     display: flex;
     justify-content: center;
@@ -284,7 +277,6 @@
     align-items: center;
 }
 
-/* Remove as setinhas do input number (opcional) */
 .campo input[type="number"]::-webkit-outer-spin-button,
 .campo input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -392,4 +384,28 @@
 .fechar:focus-visible {
     outline: 3px solid rgba(0, 122, 148, 0.4);
     outline-offset: 2px;
+}
+
+.campo.largo {
+    flex-basis: 100%;
+}
+
+.campo label small {
+    font-weight: 400;
+    color: #8a9a9f;
+}
+
+.botoes-etapa {
+    gap: 16px;
+}
+
+.continuar.voltar {
+    background: #fff;
+    color: var(--cor-principal);
+    border: 2px solid var(--cor-principal);
+    box-shadow: none;
+}
+
+.continuar.voltar:hover {
+    background: #e8eef0;
 }

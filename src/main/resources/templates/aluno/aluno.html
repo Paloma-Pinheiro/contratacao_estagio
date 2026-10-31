@@ -121,9 +121,7 @@
             <button type="button" class="fechar" id="fechar" aria-label="Fechar">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="titulo-cadastro">
-                <h2>Cadastro do Aluno</h2>
-            </div>
+            <h2 class="titulo-cadastro">Cadastro do Aluno</h2>
             <div class="dados-cadastro">
                 <div class="campo">
                     <label for="ra">RA</label>
@@ -198,11 +196,11 @@
                     <label for="modalidade-ingresso">Modalidade de Ingresso</label>
                     <select id="modalidade-ingresso" name="modalidade_ingresso" required>
                         <option value="" disabled selected>Selecione</option>
-                        <option value="ampla-concorrencia">Ampla concorrência</option>
-                        <option value="cotas-escola-publica">Cotas - Escola pública</option>
-                        <option value="cotas-racial">Cotas - Racial (PPI)</option>
-                        <option value="cotas-renda">Cotas - Renda</option>
-                        <option value="cotas-pcd">Cotas - PCD</option>
+                        <option value="ampla concorrencia">Ampla concorrência</option>
+                        <option value="cota escola-publica">Cotas - Escola pública</option>
+                        <option value="cota racial">Cotas - Racial (PPI)</option>
+                        <option value="cotas renda">Cotas - Renda</option>
+                        <option value="cotas pcd">Cotas - PCD</option>
                         <option value="transferencia">Transferência</option>
                         <option value="outra">Outra</option>
                     </select>
@@ -225,11 +223,11 @@
                     <label for="renda-familiar">Renda Familiar</label>
                     <select id="renda-familiar" name="renda_familiar" required>
                         <option value="" disabled selected>Selecione</option>
-                        <option value="ate-1">Até 1 salário mínimo</option>
-                        <option value="1-2">De 1 a 2 salários mínimos</option>
-                        <option value="2-3">De 2 a 3 salários mínimos</option>
-                        <option value="3-5">De 3 a 5 salários mínimos</option>
-                        <option value="5+">Acima de 5 salários mínimos</option>
+                        <option value="até 1 salário mínimo">Até 1 salário mínimo</option>
+                        <option value="1-2 salários mínimos">De 1 a 2 salários mínimos</option>
+                        <option value="2-3 salários mínimos">De 2 a 3 salários mínimos</option>
+                        <option value="3-5 salários mínimos">De 3 a 5 salários mínimos</option>
+                        <option value="5+ salários mínimos">Acima de 5 salários mínimos</option>
                     </select>
                 </div>
 
@@ -245,7 +243,53 @@
 
         <!-- Dados de localização -->
         <div class="modal" id="localizacao">
-            <button class="voltar" id="voltar">voltar</button>
+            <button type="button" class="fechar" aria-label="Fechar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h2 class="titulo-cadastro">Localização do Aluno</h2>
+
+            <div class="dados-cadastro">
+                <div class="campo">
+                    <label for="cep">CEP</label>
+                    <input type="text" id="cep" name="cep" inputmode="numeric" maxlength="9" placeholder="00000-000"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" name="numero" maxlength="10" required>
+                </div>
+
+                <div class="campo largo">
+                    <label for="endereco">Endereço</label>
+                    <input type="text" id="endereco" name="endereco" maxlength="100" required>
+                </div>
+
+                <div class="campo">
+                    <label for="bairro">Bairro</label>
+                    <input type="text" id="bairro" name="bairro" maxlength="60" required>
+                </div>
+
+                <div class="campo">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" id="cidade" name="cidade" maxlength="60" required>
+                </div>
+
+                <div class="campo largo">
+                    <label for="complemento">Complemento <small>(opcional)</small></label>
+                    <input type="text" id="complemento" name="complemento" maxlength="60">
+                </div>
+            </div>
+
+            <div class="area-botao botoes-etapa">
+                <button type="button" class="continuar voltar" id="voltar" aria-label="Voltar">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button type="button" class="continuar" id="finalizar" aria-label="Finalizar cadastro">
+                    <i class="fa-solid fa-check"></i>
+                </button>
+            </div>
         </div>
     </div>
 
