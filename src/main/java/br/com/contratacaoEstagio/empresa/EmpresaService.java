@@ -17,6 +17,11 @@ public class EmpresaService {
     public Empresa cadastrar(Empresa empresa){
         return empresaRepository.save(empresa);
     }
+    public void alternarStatus(Long id) {
+        Empresa empresa = buscarPorId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada"));
+        empresa.setAtivo(!empresa.isAtivo());
+        empresaRepository.save(empresa);
+    }
 
     public Empresa atualizar(Long id, Empresa dadosAtualizados){
         Empresa empresa = empresaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada."));

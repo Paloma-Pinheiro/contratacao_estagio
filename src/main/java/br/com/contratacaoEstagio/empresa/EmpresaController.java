@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController 
-@RequestMapping("/empresa")
+@RequestMapping("/api/empresa")
 public class EmpresaController {
     private final EmpresaService empresaService;
 
@@ -51,5 +51,9 @@ public class EmpresaController {
 
         return ResponseEntity.noContent().build();
     }
-
+    @PostMapping("/{id}/ativar")
+        public ResponseEntity<Void> alternarStatus(@PathVariable Long id) {
+            empresaService.alternarStatus(id);
+            return ResponseEntity.ok().build();
+        }
 }

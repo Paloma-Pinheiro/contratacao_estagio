@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/favicon.svg">
+    <script src="https://kit.fontawesome.com/df511449c7.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/empresa.css}">
+    <title>Empresa</title>
+</head>
+<body>
+    <div id="conteiner">
+        <div class="menu">
+            <div class="img">
+                <img src="/img/logo-cps-2022.svg" alt="" class="logo">
+            </div>
+            <div class="titulo">
+                <h1>Dashboard</h1>
+            </div>
+            <ul class="cadastros">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/aluno}">Aluno</a></li>
+                <li><a th:href="@{/empresa}">Empresa</a></li>
+                <li><a th:href="@{/contratos}">Contratos</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <h1>Empresa</h1>
+            <span class="divisao"></span>
+
+            <p>Consulte as empresas parceiras cadastradas e suas informações de atuação.</p>
+
+            <div class="botao-container">
+                <button class="botao-cadastro" id="abrir">
+                    Cadastrar empresa
+                </button>
+            </div>
+
+            <div class="tabela-container">
+                <table class="tabela">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Razão Social</th>
+                            <th>Segmento</th>
+                            <th>Área de Atuação</th>
+                            <th>Ativo</th>
+                            <th colspan="2">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="empresa : ${listarEmpresas}">
+                            <td th:text="${empresa.id}"></td>
+                            <td th:text="${empresa.razaoSocial}"></td>
+                            <td th:text="${empresa.segmento}"></td>
+                            <td th:text="${empresa.areaAtuacao}"></td>
+                            <td th:text="${empresa.ativo} ? 'Sim' : 'Não'"></td>
+                            <td>
+                                <button type="button" class="icon" th:title="${empresa.ativo} ? 'Desativar' : 'Ativar'"
+                                        th:onclick="'alternarStatus(' + ${empresa.id} + ')'">
+                                    <i class="fa-solid" th:classappend="${empresa.ativo} ? 'fa-pause' : 'fa-play play'"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="icon" title="Excluir"
+                                        th:onclick="'excluirEmpresa(' + ${empresa.id} + ')'">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(listarEmpresas)}">
+                            <td colspan="7" class="sem-registros">
+                                Nenhuma empresa cadastrada.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr class="separador">
+        </div>
+    </div>
+    <div class="overlay" id="overlay">
+        <div class="modal" id="dados">
+            <button type="button" class="fechar" id="fechar" aria-label="Fechar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 class="titulo-cadastro">Cadastro da Empresa</h2>
+            <div class="dados-cadastro">
+                
+                <div class="campo largo">
+                    <label for="razaoSocial">Razão Social</label>
+                    <input type="text" id="razaoSocial" name="razaoSocial" maxlength="150" required>
+                </div>
+
+                <div class="campo">
+                    <label for="segmento">Segmento</label>
+                    <input type="text" id="segmento" name="segmento" maxlength="100" placeholder="Ex: Tecnologia, Varejo..." required>
+                </div>
+
+                <div class="campo">
+                    <label for="areaAtuacao">Área de Atuação</label>
+                    <input type="text" id="areaAtuacao" name="areaAtuacao" maxlength="100" placeholder="Ex: Desenvolvimento Web..." required>
+                </div>
+
+            </div>
+            <div class="area-botao">
+                <button type="button" class="continuar" id="finalizar" aria-label="Finalizar cadastro">
+                    <i class="fa-solid fa-check"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/empresa.js"></script>
+</body>
+</html>
