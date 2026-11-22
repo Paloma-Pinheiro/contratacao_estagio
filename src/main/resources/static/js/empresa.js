@@ -72,7 +72,7 @@ document.getElementById('finalizar').onclick = async () => {
     try {
         const resp = await fetch('/api/empresa', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY }, // apagar esse 'X-API-KEY': API_KEY, quando solucionarmos o problema de key
             body: JSON.stringify(payload)
         });
 

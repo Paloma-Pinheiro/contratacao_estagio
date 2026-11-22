@@ -156,9 +156,7 @@ form.addEventListener("submit", async (event) => {
 
         const resposta = await fetch(url, {
             method: metodo,
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: {"Content-Type": "application/json", 'X-API-KEY': API_KEY },
             body: JSON.stringify(contrato)
         });
 
