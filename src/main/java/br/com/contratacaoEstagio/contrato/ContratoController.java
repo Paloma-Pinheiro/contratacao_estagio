@@ -1,6 +1,7 @@
 package br.com.contratacaoEstagio.contrato;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +53,16 @@ public class ContratoController {
         contratoService.excluirContrato(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/encerrar-vencidos")
+    public ResponseEntity<Map<String, Integer>> encerrarVencidos() {
+        int total = contratoService.encerrarContratosVencidos();
+        return ResponseEntity.ok(Map.of("contratosEncerrados", total));
+    }
+
+    @GetMapping("/relatorio")
+    public ResponseEntity<List<Map<String, Object>>> relatorio() {
+        return ResponseEntity.ok(contratoService.relatorioPorEmpresa());
     }
 }

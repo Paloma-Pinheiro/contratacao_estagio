@@ -1,6 +1,8 @@
 package br.com.contratacaoEstagio.contrato;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -75,5 +77,22 @@ public class ContratoService {
         }
 
         contratoRepository.delete(contrato);
+    }
+
+    @Transactional
+    public int encerrarContratosVencidos() {
+        Integer total = contratoRepository.encerrarContratosVencidos();
+        return total == null ? 0 : total;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> relatorioPorEmpresa() {
+        return contratoRepository.relatorioPorEmpresa().stream().map(l -> {
+            Map<String, Object> m = new LinkedHashMap<>();
+            m.put("empresaId", l[0]);
+            m.put("totalContratos", l[1]);
+            m.put("contratosAtivos", l[2]);
+            return m;
+        }).toList();
     }
 }
