@@ -21,6 +21,10 @@ public class LocalizacaoService {
         return localizacaoRepository.save(localizacao);
     }
 
+    public List<Localizacao> buscarPorAlunoRa(String ra) {
+        return localizacaoRepository.findByAluno_Ra(ra);
+    }
+
     public Localizacao atualizar(Long id, Localizacao dadosAtualizados) {
         Localizacao localizacao = localizacaoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Localizacao não encontrada"));
@@ -69,6 +73,10 @@ public class LocalizacaoService {
         localizacao.setCidade(resposta.localidade());
 
         return localizacao;
+    }
+
+    public void excluirPorAlunoRa(String ra) {
+        localizacaoRepository.deleteByAluno_Ra(ra);
     }
 
 }

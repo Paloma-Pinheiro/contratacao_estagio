@@ -1,39 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="icon" type="image/x-icon"
         href="https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/1/2022/07/favicon.svg">
+
     <script src="https://kit.fontawesome.com/df511449c7.js" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/aluno.css}">
+
     <title>Aluno</title>
 </head>
 
 <body>
+
     <div id="conteiner">
+
         <div class="menu">
+
             <div class="img">
-                <!-- <div class="logo"></div> -->
                 <img src="/img/logo-cps-2022.svg" alt="" class="logo">
             </div>
+
             <div class="titulo">
                 <h1>Dashboard</h1>
             </div>
+
             <ul class="cadastros">
                 <li><a th:href="@{/}">Início</a></li>
                 <li><a th:href="@{/aluno}">Aluno</a></li>
                 <li><a th:href="@{/empresa}">Empresa</a></li>
                 <li><a th:href="@{/contratos}">Contratos</a></li>
             </ul>
+
         </div>
+
         <div class="content">
+
             <h1>Aluno</h1>
             <span class="divisao"></span>
 
             <p>Consulte os alunos cadastrados e suas informações acadêmicas e de perfil.</p>
+
+            <div th:if="${sucesso}" class="mensagem sucesso" th:text="${sucesso}"></div>
+
+            <div th:if="${erro}" class="mensagem erro" th:text="${erro}"></div>
 
             <div class="botao-container">
                 <button class="botao-cadastro" id="abrir">
@@ -42,7 +58,9 @@
             </div>
 
             <div class="tabela-container">
+
                 <table class="tabela">
+
                     <thead>
                         <tr>
                             <th>RA</th>
@@ -58,10 +76,16 @@
                             <th>Renda Familiar</th>
                             <th>Semestre Atual</th>
                             <th>Ativo</th>
+                            <th>Editar</th>
+                            <th>Ações</th>
+                            <th>Excluir</th>
                         </tr>
                     </thead>
+
                     <tbody>
+
                         <tr th:each="aluno : ${listarUsuarios}">
+
                             <td th:text="${aluno.ra}"></td>
                             <td th:text="${aluno.nome}"></td>
                             <td th:text="${aluno.anoIngresso}"></td>
@@ -75,225 +99,351 @@
                             <td th:text="${aluno.rendaFamiliar}"></td>
                             <td th:text="${aluno.semestreAtual}"></td>
                             <td th:text="${aluno.ativo} ? 'Sim' : 'Não'"></td>
+
                             <td>
-                                <form th:action="@{/api/aluno/{ra}/ativar(ra=${aluno.ra})}" method="post">
+                                <a class="icon"
+                                    th:href="@{/aluno/{ra}/editar(ra=${aluno.ra})}"
+                                    title="Editar aluno"
+                                    aria-label="Editar aluno">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                            </td>
+
+                            <td>
+                                <form th:action="@{/aluno/{ra}/ativar(ra=${aluno.ra})}" method="post">
 
                                     <button type="submit" class="icon"
                                         th:title="${aluno.ativo} ? 'Desativar' : 'Ativar'">
 
-                                        <i class="fa-solid" th:classappend="${aluno.ativo}
-               ? 'fa-pause'
-               : 'fa-play play'"></i>
+                                        <i class="fa-solid"
+                                            th:classappend="${aluno.ativo}
+                                            ? 'fa-pause'
+                                            : 'fa-play play'">
+                                        </i>
+
                                     </button>
+
                                 </form>
                             </td>
+
                             <td>
-                                <form th:action="@{/api/aluno/{ra}/deletar(ra=${aluno.ra})}" method="post"
-                                    onsubmit="excluirAluno(event, this)">
+                                <form th:action="@{/aluno/{ra}/excluir(ra=${aluno.ra})}"
+                                    method="post"
+                                    onsubmit="return confirm('Deseja realmente excluir este aluno?')">
 
-                                    <input type="hidden" name="_method" value="DELETE">
-
-                                    <button type="submit" class="icon" title="Excluir">
+                                    <button type="submit" title="Excluir aluno">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
+
                                 </form>
                             </td>
+
                         </tr>
 
                         <tr th:if="${#lists.isEmpty(listarUsuarios)}">
-                            <td colspan="11" class="sem-registros">
+                            <td colspan="16" class="sem-registros">
                                 Nenhum aluno cadastrado.
                             </td>
                         </tr>
+
                     </tbody>
+
                 </table>
+
             </div>
 
             <hr class="separador">
+
         </div>
+
     </div>
 
     <!-- Modal de cadastro do aluno -->
 
-    <div class="overlay" id="overlay">
-        <!-- Dados do aluno -->
-        <div class="modal" id="dados">
-            <button type="button" class="fechar" id="fechar" aria-label="Fechar">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h2 class="titulo-cadastro">Cadastro do Aluno</h2>
-            <div class="dados-cadastro">
-                <div class="campo">
-                    <label for="ra">RA</label>
-                    <input type="text" id="ra" name="ra" inputmode="numeric" pattern="[0-9]+" maxlength="13" required>
-                </div>
+    <div class="overlay" id="overlay"
+        th:classappend="${modoEdicao} ? ' modo-edicao' : ''">
 
-                <div class="campo">
-                    <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" autocomplete="name" required>
-                </div>
+        <form th:action="${formAction}" method="post" id="formAluno" novalidate>
 
-                <div class="campo">
-                    <label for="ano-ingresso">Ano de Ingresso</label>
-                    <input type="number" id="ano-ingresso" name="ano_ingresso" min="2002" step="1" placeholder="2024"
-                        required>
-                </div>
+            <input type="hidden" name="ativo"
+                th:value="${alunoEdicao != null ? alunoEdicao.ativo : true}">
 
-                <div class="campo">
-                    <label for="curso">Curso</label>
-                    <select id="curso" name="curso" required>
-                        <option value="" disabled selected>Selecione</option>
-                        <option value="AMS">AMS - Análise e Desenvolvimento de Sistemas</option>
-                        <option value="ADS">Análise e Desenvolvimento de Sistemas</option>
-                        <option value="COMEX">Comércio Exterior</option>
-                        <option value="DPP">Desenvolvimento de Produtos Plásticos</option>
-                        <option value="DSM">Desenvolvimento de Software Multiplataforma</option>
-                        <option value="GRH">Gestão de Recursos Humanos</option>
-                        <option value="GE">Gestão Empresarial</option>
-                        <option value="LOG">Logística</option>
-                    </select>
-                </div>
+            <!-- Dados do aluno -->
 
-                <div class="campo">
-                    <label for="etnia">Etnia</label>
-                    <select id="etnia" name="etnia" required>
-                        <option value="" disabled selected>Selecione</option>
-                        <option value="branca">Branca</option>
-                        <option value="preta">Preta</option>
-                        <option value="parda">Parda</option>
-                        <option value="amarela">Amarela</option>
-                        <option value="indigena">Indígena</option>
-                        <option value="nao-declarado">Prefiro não declarar</option>
-                    </select>
-                </div>
+            <div class="modal" id="dados">
 
-                <div class="campo">
-                    <label for="faixa-etaria">Faixa Etária</label>
-                    <select id="faixa-etaria" name="faixa_etaria" required>
-                        <option value="" disabled selected>Selecione</option>
-                        <option value="ate-17">Até 17 anos</option>
-                        <option value="18-24">18 a 24 anos</option>
-                        <option value="25-29">25 a 29 anos</option>
-                        <option value="30-39">30 a 39 anos</option>
-                        <option value="40-49">40 a 49 anos</option>
-                        <option value="50+">50 anos ou mais</option>
-                    </select>
-                </div>
+                <button type="button" class="fechar" id="fechar" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
 
-                <div class="campo">
-                    <label for="genero">Gênero</label>
-                    <select id="genero" name="genero" required>
-                        <option value="" disabled selected>Selecione</option>
-                        <option value="feminino">Feminino</option>
-                        <option value="masculino">Masculino</option>
-                        <option value="nao-binario">Não binário</option>
-                        <option value="outro">Outro</option>
-                        <option value="nao-declarado">Prefiro não informar</option>
-                    </select>
-                </div>
+                <h2 class="titulo-cadastro" th:text="${tituloFormulario}">
+                    Cadastro do Aluno
+                </h2>
 
-                <div class="campo">
-                    <label for="modalidade-ingresso">Modalidade de Ingresso</label>
-                    <select id="modalidade-ingresso" name="modalidade_ingresso" required>
-                        <option value="" disabled selected>Selecione</option>
-                        <option value="ampla concorrencia">Ampla concorrência</option>
-                        <option value="cota escola-publica">Cotas - Escola pública</option>
-                        <option value="cota racial">Cotas - Racial (PPI)</option>
-                        <option value="cotas renda">Cotas - Renda</option>
-                        <option value="cotas pcd">Cotas - PCD</option>
-                        <option value="transferencia">Transferência</option>
-                        <option value="outra">Outra</option>
-                    </select>
-                </div>
+                <div class="dados-cadastro">
 
-                <div class="campo">
-                    <span>PCD</span>
-                    <div class="opcoes-pcd">
-                        <label><input type="radio" name="pcd" value="sim" required> Sim</label>
-                        <label><input type="radio" name="pcd" value="nao" required> Não</label>
+                    <div class="campo">
+                        <label for="ra">RA</label>
+                        <input type="text" id="ra" name="ra" inputmode="numeric"
+                            pattern="[0-9]+" maxlength="13" required
+                            th:value="${alunoEdicao != null ? alunoEdicao.ra : ''}"
+                            th:readonly="${modoEdicao}">
                     </div>
+
+                    <div class="campo">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome"
+                            autocomplete="name" required
+                            th:value="${alunoEdicao != null ? alunoEdicao.nome : ''}">
+                    </div>
+
+                    <div class="campo">
+                        <label for="ano-ingresso">Ano de Ingresso</label>
+                        <input type="number" id="ano-ingresso" name="anoIngresso"
+                            min="2002" step="1" placeholder="2024" required
+                            th:value="${alunoEdicao != null ? alunoEdicao.anoIngresso : ''}">
+                    </div>
+
+                    <div class="campo">
+                        <label for="curso">Curso</label>
+                        <select id="curso" name="curso" required>
+                            <option value="" disabled
+                                th:selected="${alunoEdicao == null}">Selecione</option>
+                            <option value="AMS"
+                                th:selected="${alunoEdicao != null and alunoEdicao.curso == 'AMS'}">AMS - Análise e Desenvolvimento de Sistemas</option>
+                            <option value="ADS"
+                                th:selected="${alunoEdicao != null and alunoEdicao.curso == 'ADS'}">Análise e Desenvolvimento de Sistemas</option>
+                            <option value="COMEX"
+                                th:selected="${alunoEdicao != null and alunoEdicao.curso == 'COMEX'}">Comércio Exterior</option>
+                            <option value="DPP"
+                                th:selected="${alunoEdicao != null and alunoEdicao.curso == 'DPP'}">Desenvolvimento de Produtos Plásticos</option>
+                            <option value="DSM"
+                                th:selected="${alunoEdicao != null and alunoEdicao.curso == 'DSM'}">Desenvolvimento de Software Multiplataforma</option>
+                            <option value="GRH"
+                                th:selected="${alunoEdicao != null and alunoEdicao.curso == 'GRH'}">Gestão de Recursos Humanos</option>
+                            <option value="GE"
+                                th:selected="${alunoEdicao != null and alunoEdicao.curso == 'GE'}">Gestão Empresarial</option>
+                            <option value="LOG"
+                                th:selected="${alunoEdicao != null and alunoEdicao.curso == 'LOG'}">Logística</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="etnia">Etnia</label>
+                        <select id="etnia" name="etnia" required>
+                            <option value="" disabled
+                                th:selected="${alunoEdicao == null}">Selecione</option>
+                            <option value="branca"
+                                th:selected="${alunoEdicao != null and alunoEdicao.etnia == 'branca'}">Branca</option>
+                            <option value="preta"
+                                th:selected="${alunoEdicao != null and alunoEdicao.etnia == 'preta'}">Preta</option>
+                            <option value="parda"
+                                th:selected="${alunoEdicao != null and alunoEdicao.etnia == 'parda'}">Parda</option>
+                            <option value="amarela"
+                                th:selected="${alunoEdicao != null and alunoEdicao.etnia == 'amarela'}">Amarela</option>
+                            <option value="indigena"
+                                th:selected="${alunoEdicao != null and alunoEdicao.etnia == 'indigena'}">Indígena</option>
+                            <option value="nao-declarado"
+                                th:selected="${alunoEdicao != null and alunoEdicao.etnia == 'nao-declarado'}">Prefiro não declarar</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="faixa-etaria">Faixa Etária</label>
+                        <select id="faixa-etaria" name="faixaEtaria" required>
+                            <option value="" disabled
+                                th:selected="${alunoEdicao == null}">Selecione</option>
+                            <option value="ate-17"
+                                th:selected="${alunoEdicao != null and alunoEdicao.faixaEtaria == 'ate-17'}">Até 17 anos</option>
+                            <option value="18-24"
+                                th:selected="${alunoEdicao != null and alunoEdicao.faixaEtaria == '18-24'}">18 a 24 anos</option>
+                            <option value="25-29"
+                                th:selected="${alunoEdicao != null and alunoEdicao.faixaEtaria == '25-29'}">25 a 29 anos</option>
+                            <option value="30-39"
+                                th:selected="${alunoEdicao != null and alunoEdicao.faixaEtaria == '30-39'}">30 a 39 anos</option>
+                            <option value="40-49"
+                                th:selected="${alunoEdicao != null and alunoEdicao.faixaEtaria == '40-49'}">40 a 49 anos</option>
+                            <option value="50+"
+                                th:selected="${alunoEdicao != null and alunoEdicao.faixaEtaria == '50+'}">50 anos ou mais</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="genero">Gênero</label>
+                        <select id="genero" name="genero" required>
+                            <option value="" disabled
+                                th:selected="${alunoEdicao == null}">Selecione</option>
+                            <option value="feminino"
+                                th:selected="${alunoEdicao != null and alunoEdicao.genero == 'feminino'}">Feminino</option>
+                            <option value="masculino"
+                                th:selected="${alunoEdicao != null and alunoEdicao.genero == 'masculino'}">Masculino</option>
+                            <option value="nao-binario"
+                                th:selected="${alunoEdicao != null and alunoEdicao.genero == 'nao-binario'}">Não binário</option>
+                            <option value="outro"
+                                th:selected="${alunoEdicao != null and alunoEdicao.genero == 'outro'}">Outro</option>
+                            <option value="nao-declarado"
+                                th:selected="${alunoEdicao != null and alunoEdicao.genero == 'nao-declarado'}">Prefiro não informar</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="modalidade-ingresso">Modalidade de Ingresso</label>
+                        <select id="modalidade-ingresso" name="modalidadeIngresso" required>
+                            <option value="" disabled
+                                th:selected="${alunoEdicao == null}">Selecione</option>
+                            <option value="ampla concorrencia"
+                                th:selected="${alunoEdicao != null and alunoEdicao.modalidadeIngresso == 'ampla concorrencia'}">Ampla concorrência</option>
+                            <option value="cota escola-publica"
+                                th:selected="${alunoEdicao != null and alunoEdicao.modalidadeIngresso == 'cota escola-publica'}">Cotas - Escola pública</option>
+                            <option value="cota racial"
+                                th:selected="${alunoEdicao != null and alunoEdicao.modalidadeIngresso == 'cota racial'}">Cotas - Racial (PPI)</option>
+                            <option value="cotas renda"
+                                th:selected="${alunoEdicao != null and alunoEdicao.modalidadeIngresso == 'cotas renda'}">Cotas - Renda</option>
+                            <option value="cotas pcd"
+                                th:selected="${alunoEdicao != null and alunoEdicao.modalidadeIngresso == 'cotas pcd'}">Cotas - PCD</option>
+                            <option value="transferencia"
+                                th:selected="${alunoEdicao != null and alunoEdicao.modalidadeIngresso == 'transferencia'}">Transferência</option>
+                            <option value="outra"
+                                th:selected="${alunoEdicao != null and alunoEdicao.modalidadeIngresso == 'outra'}">Outra</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <span>PCD</span>
+                        <div class="opcoes-pcd">
+                            <label>
+                                <input type="radio" name="pcd" value="true" required
+                                    th:checked="${alunoEdicao != null and alunoEdicao.pcd}"> Sim
+                            </label>
+                            <label>
+                                <input type="radio" name="pcd" value="false" required
+                                    th:checked="${alunoEdicao != null and !alunoEdicao.pcd}"> Não
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="tentativas">Quantidade de Tentativas</label>
+                        <input type="number" id="tentativas" name="qtTentativasVestibular"
+                            min="1" max="20" step="1" required
+                            th:value="${alunoEdicao != null ? alunoEdicao.qtTentativasVestibular : ''}">
+                    </div>
+
+                    <div class="campo">
+                        <label for="renda-familiar">Renda Familiar</label>
+                        <select id="renda-familiar" name="rendaFamiliar" required>
+                            <option value="" disabled
+                                th:selected="${alunoEdicao == null}">Selecione</option>
+                            <option value="até 1 salário mínimo"
+                                th:selected="${alunoEdicao != null and alunoEdicao.rendaFamiliar == 'até 1 salário mínimo'}">Até 1 salário mínimo</option>
+                            <option value="1-2 salários mínimos"
+                                th:selected="${alunoEdicao != null and alunoEdicao.rendaFamiliar == '1-2 salários mínimos'}">De 1 a 2 salários mínimos</option>
+                            <option value="2-3 salários mínimos"
+                                th:selected="${alunoEdicao != null and alunoEdicao.rendaFamiliar == '2-3 salários mínimos'}">De 2 a 3 salários mínimos</option>
+                            <option value="3-5 salários mínimos"
+                                th:selected="${alunoEdicao != null and alunoEdicao.rendaFamiliar == '3-5 salários mínimos'}">De 3 a 5 salários mínimos</option>
+                            <option value="5+ salários mínimos"
+                                th:selected="${alunoEdicao != null and alunoEdicao.rendaFamiliar == '5+ salários mínimos'}">Acima de 5 salários mínimos</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="semestre-atual">Semestre Atual</label>
+                        <input type="number" id="semestre-atual" name="semestreAtual"
+                            min="1" max="10" step="1" required
+                            th:value="${alunoEdicao != null ? alunoEdicao.semestreAtual : ''}">
+                    </div>
+
                 </div>
 
-                <div class="campo">
-                    <label for="tentativas">Quantidade de Tentativas</label>
-                    <input type="number" id="tentativas" name="tentativas" min="1" max="20" step="1" required>
+                <div class="area-botao">
+                    <button type="button" class="continuar" id="continuar">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
 
-                <div class="campo">
-                    <label for="renda-familiar">Renda Familiar</label>
-                    <select id="renda-familiar" name="renda_familiar" required>
-                        <option value="" disabled selected>Selecione</option>
-                        <option value="até 1 salário mínimo">Até 1 salário mínimo</option>
-                        <option value="1-2 salários mínimos">De 1 a 2 salários mínimos</option>
-                        <option value="2-3 salários mínimos">De 2 a 3 salários mínimos</option>
-                        <option value="3-5 salários mínimos">De 3 a 5 salários mínimos</option>
-                        <option value="5+ salários mínimos">Acima de 5 salários mínimos</option>
-                    </select>
-                </div>
-
-                <div class="campo">
-                    <label for="semestre-atual">Semestre Atual</label>
-                    <input type="number" id="semestre-atual" name="semestre_atual" min="1" max="10" step="1" required>
-                </div>
             </div>
-            <div class="area-botao">
-                <button class="continuar" id="continuar"><i class="fa-solid fa-chevron-right"></i></button>
-            </div>
-        </div>
 
-        <!-- Dados de localização -->
-        <div class="modal" id="localizacao">
-            <button type="button" class="fechar" aria-label="Fechar">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <!-- Dados de localização -->
 
-            <h2 class="titulo-cadastro">Localização do Aluno</h2>
+            <div class="modal" id="localizacao">
 
-            <div class="dados-cadastro">
-                <div class="campo">
-                    <label for="cep">CEP</label>
-                    <input type="text" id="cep" name="cep" inputmode="numeric" maxlength="9" placeholder="00000-000"
-                        required>
-                </div>
-
-                <div class="campo">
-                    <label for="numero">Número</label>
-                    <input type="text" id="numero" name="numero" maxlength="10" required>
-                </div>
-
-                <div class="campo largo">
-                    <label for="endereco">Endereço</label>
-                    <input type="text" id="endereco" name="endereco" maxlength="100" required>
-                </div>
-
-                <div class="campo">
-                    <label for="bairro">Bairro</label>
-                    <input type="text" id="bairro" name="bairro" maxlength="60" required>
-                </div>
-
-                <div class="campo">
-                    <label for="cidade">Cidade</label>
-                    <input type="text" id="cidade" name="cidade" maxlength="60" required>
-                </div>
-
-                <div class="campo largo">
-                    <label for="complemento">Complemento <small>(opcional)</small></label>
-                    <input type="text" id="complemento" name="complemento" maxlength="60">
-                </div>
-            </div>
-
-            <div class="area-botao botoes-etapa">
-                <button type="button" class="continuar voltar" id="voltar" aria-label="Voltar">
-                    <i class="fa-solid fa-chevron-left"></i>
+                <button type="button" class="fechar" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
-                <button type="button" class="continuar" id="finalizar" aria-label="Finalizar cadastro">
-                    <i class="fa-solid fa-check"></i>
-                </button>
+
+                <h2 class="titulo-cadastro">Localização do Aluno</h2>
+
+                <div class="dados-cadastro">
+
+                    <div class="campo">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" name="cep" inputmode="numeric"
+                            maxlength="9" placeholder="00000-000" required
+                            th:value="${localizacaoEdicao != null ? localizacaoEdicao.cep : ''}">
+                    </div>
+
+                    <div class="campo">
+                        <label for="numero">Número</label>
+                        <input type="text" id="numero" name="numero"
+                            maxlength="10" required
+                            th:value="${localizacaoEdicao != null ? localizacaoEdicao.numero : ''}">
+                    </div>
+
+                    <div class="campo largo">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" name="endereco"
+                            maxlength="100" required
+                            th:value="${localizacaoEdicao != null ? localizacaoEdicao.endereco : ''}">
+                    </div>
+
+                    <div class="campo">
+                        <label for="bairro">Bairro</label>
+                        <input type="text" id="bairro" name="bairro"
+                            maxlength="60" required
+                            th:value="${localizacaoEdicao != null ? localizacaoEdicao.bairro : ''}">
+                    </div>
+
+                    <div class="campo">
+                        <label for="cidade">Cidade</label>
+                        <input type="text" id="cidade" name="cidade"
+                            maxlength="60" required
+                            th:value="${localizacaoEdicao != null ? localizacaoEdicao.cidade : ''}">
+                    </div>
+
+                    <div class="campo largo">
+                        <label for="complemento">
+                            Complemento <small>(opcional)</small>
+                        </label>
+                        <input type="text" id="complemento" name="complemento"
+                            maxlength="60"
+                            th:value="${localizacaoEdicao != null ? localizacaoEdicao.complemento : ''}">
+                    </div>
+
+                </div>
+
+                <div class="area-botao botoes-etapa">
+
+                    <button type="button" class="continuar voltar" id="voltar"
+                        aria-label="Voltar">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                    <button type="submit" class="continuar" id="finalizar"
+                        th:title="${textoBotao}"
+                        th:aria-label="${textoBotao}">
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+
+                </div>
+
             </div>
-        </div>
+
+        </form>
+
     </div>
 
     <script src="/js/aluno.js"></script>
-</body>
 
+</body>
 </html>

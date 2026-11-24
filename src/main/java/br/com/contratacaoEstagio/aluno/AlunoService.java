@@ -1,3 +1,4 @@
+
 package br.com.contratacaoEstagio.aluno;
 
 import java.util.List;
@@ -7,23 +8,55 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.contratacaoEstagio.localizacao.Localizacao;
+import br.com.contratacaoEstagio.localizacao.LocalizacaoRepository;
+import br.com.contratacaoEstagio.localizacao.LocalizacaoService;
 import jakarta.transaction.Transactional;
 
 @Service
 public class AlunoService {
-    private final AlunoRepository alunoRepository;
 
-    public AlunoService(AlunoRepository alunoRepository) {
+    private final AlunoRepository alunoRepository;
+    private final LocalizacaoRepository localizacaoRepository;
+    private final LocalizacaoService localizacaoService;
+
+    public AlunoService(
+            AlunoRepository alunoRepository,
+            LocalizacaoRepository localizacaoRepository,
+            LocalizacaoService localizacaoService) {
         this.alunoRepository = alunoRepository;
+        this.localizacaoRepository = localizacaoRepository;
+        this.localizacaoService = localizacaoService;
     }
 
     public Aluno cadastrar(Aluno aluno) {
         return alunoRepository.save(aluno);
     }
 
+    @Transactional
+    public boolean atualizarComLocalizacao(
+            String ra,
+            Aluno dadosAtualizados,
+            Localizacao dadosLocalizacao) {
+
+        List<Localizacao> localizacoes = localizacaoService.buscarPorAlunoRa(ra);
+
+        if (localizacoes.size() != 1) {
+            return false;
+        }
+
+        Aluno alunoAtualizado = atualizar(ra, dadosAtualizados);
+        dadosLocalizacao.setAluno(alunoAtualizado);
+        localizacaoService.atualizar(
+                localizacoes.get(0).getId(), dadosLocalizacao);
+
+        return true;
+    }
+
     public Aluno atualizar(String ra, Aluno dadosAtualizados) {
         Aluno aluno = alunoRepository.findById(ra)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encotrado."));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Aluno não encontrado."));
 
         aluno.setAnoIngresso(dadosAtualizados.getAnoIngresso());
         aluno.setNome(dadosAtualizados.getNome());
@@ -71,7 +104,14 @@ public class AlunoService {
         return alunoRepository.existsById(ra);
     }
 
+    @Transactional
     public void excluirPorRa(String ra) {
+        if (!alunoRepository.existsById(ra)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Aluno não encontrado.");
+        }
+
+        localizacaoRepository.deleteByAluno_Ra(ra);
         alunoRepository.deleteById(ra);
     }
 }
