@@ -1,7 +1,3 @@
-// teporario
-const API_KEY = "chave123";
-
-
 async function excluirAluno(event, formulario) {
     event.preventDefault();
 
