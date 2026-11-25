@@ -1,115 +1,80 @@
 const overlay = document.getElementById('overlay');
 const dados = document.getElementById('dados');
+const formEmpresa = document.getElementById('formEmpresa');
+const tituloFormulario = formEmpresa.querySelector('.titulo-cadastro');
+const modoEdicao = overlay.classList.contains('modo-edicao');
 
-document.getElementById('abrir').onclick = () => {
+function abrirModal() {
     overlay.classList.add('ativo');
     dados.classList.add('ativo');
-};
+}
 
-document.getElementById('fechar').onclick = () => {
+function fecharModal() {
     overlay.classList.remove('ativo');
     dados.classList.remove('ativo');
-};
+}
 
-overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) document.getElementById('fechar').click();
+document.getElementById('abrir').addEventListener('click', () => {
+    formEmpresa.querySelectorAll('input:not([type="hidden"])').forEach(campo => {
+        campo.value = '';
+    });
+    formEmpresa.action = '/empresa';
+    tituloFormulario.textContent = 'Cadastro da Empresa';
+    overlay.classList.remove('modo-edicao');
+    formEmpresa.querySelectorAll('.msg-erro').forEach(mensagem => mensagem.remove());
+    formEmpresa.querySelectorAll('.invalido').forEach(campo => {
+        campo.classList.remove('invalido');
+    });
+    abrirModal();
 });
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.classList.contains('ativo')) {
-        document.getElementById('fechar').click();
+document.getElementById('fechar').addEventListener('click', fecharModal);
+
+overlay.addEventListener('click', (evento) => {
+    if (evento.target === overlay) fecharModal();
+});
+
+document.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Escape' && overlay.classList.contains('ativo')) {
+        fecharModal();
     }
 });
 
-dados.addEventListener('input', (e) => {
-    const campo = e.target;
+formEmpresa.addEventListener('input', (evento) => {
+    const campo = evento.target;
     campo.classList.remove('invalido');
     campo.closest('.campo')?.querySelector('.msg-erro')?.remove();
 });
 
 function validarFormulario() {
     let primeiroInvalido = null;
-    const campos = dados.querySelectorAll('input');
+    const campos = formEmpresa.querySelectorAll('input:not([type="hidden"])');
 
-    dados.querySelectorAll('.msg-erro').forEach(m => m.remove());
-    dados.querySelectorAll('.invalido').forEach(c => c.classList.remove('invalido'));
+    formEmpresa.querySelectorAll('.msg-erro').forEach(mensagem => mensagem.remove());
+    formEmpresa.querySelectorAll('.invalido').forEach(campo => {
+        campo.classList.remove('invalido');
+    });
 
     for (const campo of campos) {
+        campo.value = campo.value.trim();
         if (campo.checkValidity()) continue;
 
         const container = campo.closest('.campo');
-        if (!container.querySelector('.msg-erro')) {
-            const msg = document.createElement('small');
-            msg.className = 'msg-erro';
-            msg.textContent = 'Preencha este campo.';
-            container.appendChild(msg);
-        }
+        const mensagem = document.createElement('small');
+        mensagem.className = 'msg-erro';
+        mensagem.textContent = 'Preencha este campo.';
+        container.appendChild(mensagem);
 
         campo.classList.add('invalido');
         primeiroInvalido ??= campo;
     }
 
-    if (primeiroInvalido) {
-        primeiroInvalido.focus();
-        return false;
-    }
-    return true;
-}
-document.getElementById('finalizar').onclick = async () => {
-    if (!validarFormulario()) return;
-
-    const razaoSocial = document.getElementById('razaoSocial').value.trim();
-    const segmento = document.getElementById('segmento').value.trim();
-    const areaAtuacao = document.getElementById('areaAtuacao').value.trim();
-
-    const payload = {
-        razaoSocial: razaoSocial,
-        segmento: segmento,
-        areaAtuacao: areaAtuacao,
-        ativo: true // Campo padrão da entidade
-    };
-
-    try {
-        const resp = await fetch('/api/empresa', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify(payload)
-        });
-
-        if (resp.status === 201) {
-            document.getElementById('fechar').click();
-            location.reload(); 
-        } else {
-            alert('Verifique os dados e tente novamente.');
-        }
-    } catch {
-        alert('Erro de conexão com o servidor.');
-    }
-};
-async function excluirEmpresa(id) {
-    if (!confirm('Deseja realmente excluir esta empresa?')) return;
-
-    try {
-        const resp = await fetch(`/api/empresa/${id}`, { method: 'DELETE' });
-        if (resp.ok || resp.status === 204) {
-            location.reload();
-        } else {
-            alert('Erro ao excluir a empresa.');
-        }
-    } catch {
-        alert('Erro de conexão com o servidor.');
-    }
+    primeiroInvalido?.focus();
+    return !primeiroInvalido;
 }
 
-async function alternarStatus(id) {
-    try {
-        const resp = await fetch(`/api/empresa/${id}/ativar`, { method: 'POST' });
-        if (resp.ok) {
-            location.reload();
-        } else {
-            alert('Erro ao alterar o status da empresa.');
-        }
-    } catch {
-        alert('Erro de conexão com o servidor.');
-    }
-}
+formEmpresa.addEventListener('submit', (evento) => {
+    if (!validarFormulario()) evento.preventDefault();
+});
+
+if (modoEdicao) abrirModal();

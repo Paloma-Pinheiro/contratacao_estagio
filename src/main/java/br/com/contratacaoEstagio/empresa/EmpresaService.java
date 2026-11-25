@@ -1,4 +1,5 @@
 package br.com.contratacaoEstagio.empresa;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -6,12 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.contratacaoEstagio.contrato.ContratoRepository;
+
 @Service 
 public class EmpresaService {
     private final EmpresaRepository empresaRepository;
+    private final ContratoRepository contratoRepository;
 
-    public EmpresaService(EmpresaRepository empresaRepository){
+    public EmpresaService(
+            EmpresaRepository empresaRepository,
+            ContratoRepository contratoRepository) {
         this.empresaRepository = empresaRepository;
+        this.contratoRepository = contratoRepository;
     }
 
     public Empresa cadastrar(Empresa empresa){
@@ -27,7 +34,6 @@ public class EmpresaService {
         Empresa empresa = empresaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada."));
 
         empresa.setAreaAtuacao(dadosAtualizados.getAreaAtuacao());
-        empresa.setAtivo(dadosAtualizados.isAtivo());
         empresa.setRazaoSocial(dadosAtualizados.getRazaoSocial());
         empresa.setSegmento(dadosAtualizados.getSegmento());
 
@@ -46,7 +52,18 @@ public class EmpresaService {
         return empresaRepository.existsById(id);
     }
 
-    public void excluirEmpresa(Long id){
+    public void excluirEmpresa(Long id) {
+        if (!empresaRepository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Empresa não encontrada.");
+        }
+
+        if (contratoRepository.existsByEmpresa_Id(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Não é possível excluir a empresa porque existem contratos vinculados.");
+        }
+
         empresaRepository.deleteById(id);
     }
 }

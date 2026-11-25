@@ -31,8 +31,11 @@
 
             <p>Consulte as empresas parceiras cadastradas e suas informações de atuação.</p>
 
+            <div th:if="${sucesso}" class="mensagem sucesso" th:text="${sucesso}"></div>
+            <div th:if="${erro}" class="mensagem erro" th:text="${erro}"></div>
+
             <div class="botao-container">
-                <button class="botao-cadastro" id="abrir">
+                <button type="button" class="botao-cadastro" id="abrir">
                     Cadastrar empresa
                 </button>
             </div>
@@ -46,7 +49,7 @@
                             <th>Segmento</th>
                             <th>Área de Atuação</th>
                             <th>Ativo</th>
-                            <th colspan="2">Ações</th>
+                            <th colspan="3">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,20 +60,34 @@
                             <td th:text="${empresa.areaAtuacao}"></td>
                             <td th:text="${empresa.ativo} ? 'Sim' : 'Não'"></td>
                             <td>
-                                <button type="button" class="icon" th:title="${empresa.ativo} ? 'Desativar' : 'Ativar'"
-                                        th:onclick="'alternarStatus(' + ${empresa.id} + ')'">
-                                    <i class="fa-solid" th:classappend="${empresa.ativo} ? 'fa-pause' : 'fa-play play'"></i>
-                                </button>
+                                <a class="icon"
+                                   th:href="@{/empresa/{id}/editar(id=${empresa.id})}"
+                                   title="Editar empresa"
+                                   aria-label="Editar empresa">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
                             </td>
                             <td>
-                                <button type="button" class="icon" title="Excluir"
-                                        th:onclick="'excluirEmpresa(' + ${empresa.id} + ')'">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
+                                <form th:action="@{/empresa/{id}/ativar(id=${empresa.id})}" method="post">
+                                    <button type="submit" class="icon"
+                                            th:title="${empresa.ativo} ? 'Desativar' : 'Ativar'">
+                                        <i class="fa-solid"
+                                           th:classappend="${empresa.ativo} ? 'fa-pause' : 'fa-play play'"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form th:action="@{/empresa/{id}/excluir(id=${empresa.id})}"
+                                      method="post"
+                                      onsubmit="return confirm('Deseja realmente excluir esta empresa?')">
+                                    <button type="submit" class="icon" title="Excluir empresa">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(listarEmpresas)}">
-                            <td colspan="7" class="sem-registros">
+                            <td colspan="8" class="sem-registros">
                                 Nenhuma empresa cadastrada.
                             </td>
                         </tr>
@@ -80,39 +97,49 @@
             <hr class="separador">
         </div>
     </div>
-    <div class="overlay" id="overlay">
+    <div class="overlay" id="overlay"
+         th:classappend="${modoEdicao} ? ' modo-edicao' : ''">
         <div class="modal" id="dados">
             <button type="button" class="fechar" id="fechar" aria-label="Fechar">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <h2 class="titulo-cadastro">Cadastro da Empresa</h2>
-            <div class="dados-cadastro">
-                
-                <div class="campo largo">
-                    <label for="razaoSocial">Razão Social</label>
-                    <input type="text" id="razaoSocial" name="razaoSocial" maxlength="150" required>
-                </div>
+            <form th:action="${formAction}" th:object="${empresaForm}"
+                  method="post" id="formEmpresa" novalidate>
+                <h2 class="titulo-cadastro"
+                    th:text="${modoEdicao} ? 'Editar Empresa' : 'Cadastro da Empresa'">
+                    Cadastro da Empresa
+                </h2>
+                <div class="dados-cadastro">
+                    <div class="campo largo">
+                        <label for="razaoSocial">Razão Social</label>
+                        <input type="text" th:field="*{razaoSocial}"
+                               maxlength="150" required>
+                    </div>
 
-                <div class="campo">
-                    <label for="segmento">Segmento</label>
-                    <input type="text" id="segmento" name="segmento" maxlength="100" placeholder="Ex: Tecnologia, Varejo..." required>
-                </div>
+                    <div class="campo">
+                        <label for="segmento">Segmento</label>
+                        <input type="text" th:field="*{segmento}"
+                               maxlength="100"
+                               placeholder="Ex: Tecnologia, Varejo..." required>
+                    </div>
 
-                <div class="campo">
-                    <label for="areaAtuacao">Área de Atuação</label>
-                    <input type="text" id="areaAtuacao" name="areaAtuacao" maxlength="100" placeholder="Ex: Desenvolvimento Web..." required>
+                    <div class="campo">
+                        <label for="areaAtuacao">Área de Atuação</label>
+                        <input type="text" th:field="*{areaAtuacao}"
+                               maxlength="100"
+                               placeholder="Ex: Desenvolvimento Web..." required>
+                    </div>
                 </div>
-
-            </div>
-            <div class="area-botao">
-                <button type="button" class="continuar" id="finalizar" aria-label="Finalizar cadastro">
-                    <i class="fa-solid fa-check"></i>
-                </button>
-            </div>
+                <div class="area-botao">
+                    <button type="submit" class="continuar" id="finalizar"
+                            aria-label="Salvar empresa">
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script th:src="@{/js/empresa.js}" defer></script>
-
 </body>
 </html>

@@ -46,6 +46,22 @@
     background-color: #00788d;
 }
 
+.mensagem {
+    margin: 12px 0;
+    padding: 10px 14px;
+    border-radius: 5px;
+}
+
+.mensagem.sucesso {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+}
+
+.mensagem.erro {
+    background-color: #ffebee;
+    color: #b71c1c;
+}
+
 .tabela-container {
     display: block;
     width: 100%;
