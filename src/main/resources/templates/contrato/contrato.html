@@ -52,6 +52,11 @@
                 suas informações e sua situação atual.
             </p>
 
+            <div th:if="${sucesso}" class="status ativo"
+                role="status" th:text="${sucesso}"></div>
+            <div th:if="${erro}" class="mensagem-erro status inativo"
+                role="alert" th:text="${erro}"></div>
+
             <!-- BOTÃO DE CADASTRO -->
             <div class="botao-container">
                 <button type="button"
@@ -117,35 +122,25 @@
                             <!-- AÇÕES -->
                             <td class="acoes">
 
-                                <button type="button"
-                                    class="icon editar"
+                                <a class="icon editar"
                                     title="Editar contrato"
-
-                                    th:data-id="${contrato.id}"
-                                    th:data-aluno-ra="${contrato.aluno.ra}"
-                                    th:data-empresa-id="${contrato.empresa.id}"
-                                    th:data-area="${contrato.area}"
-                                    th:data-cargo="${contrato.cargo}"
-                                    th:data-modalidade="${contrato.modalidade}"
-                                    th:data-horario="${contrato.horario}"
-                                    th:data-carga-horaria="${contrato.cargaHoraria}"
-                                    th:data-data-inicio="${contrato.dataInicio}"
-                                    th:data-data-termino="${contrato.dataTermino}"
-                                    th:data-ativo="${contrato.ativo}"
-
-                                    onclick="editarContrato(this)">
-
+                                    aria-label="Editar contrato"
+                                    th:href="@{/contratos/{id}/editar(id=${contrato.id})}">
                                     <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
+                                </a>
 
-                                <button type="button"
-                                    class="icon excluir"
-                                    title="Excluir contrato"
-                                    th:data-id="${contrato.id}"
-                                    onclick="excluirContrato(this)">
-
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
+                                <form
+                                    th:action="@{/contratos/{id}/excluir(id=${contrato.id})}"
+                                    method="post"
+                                    style="display: inline"
+                                    onsubmit="return confirm('Tem certeza que deseja excluir este contrato?')">
+                                    <button type="submit"
+                                        class="icon excluir"
+                                        title="Excluir contrato"
+                                        aria-label="Excluir contrato">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
 
                             </td>
 
@@ -169,7 +164,8 @@
     </div>
 
     <!-- MODAL -->
-    <div class="overlay" id="overlay">
+    <div class="overlay" id="overlay"
+        th:classappend="${modoEdicao} ? ' ativo' : ''">
 
         <div class="modal" id="modal">
 
@@ -180,12 +176,18 @@
             </button>
 
             <h2 class="titulo-cadastro" id="tituloModal">
-                Cadastrar contrato
+                <span th:text="${modoEdicao} ? 'Editar contrato' : 'Cadastrar contrato'">
+                    Cadastrar contrato
+                </span>
             </h2>
 
-            <form id="formContrato">
+            <form id="formContrato"
+                method="post"
+                th:action="${formAction}"
+                th:object="${contratoForm}"
+                th:attr="data-create-action=@{/contratos}">
 
-                <input type="hidden" id="contratoId">
+                <input type="hidden" id="contratoId" th:field="*{id}">
 
                 <div class="dados-cadastro" id="dados">
 
@@ -193,12 +195,16 @@
                     <div class="campo">
                         <label for="aluno">Aluno</label>
 
-                        <select id="aluno" required>
-                            <option value="">Selecione um aluno</option>
+                        <select id="aluno" name="aluno.ra" required>
+                            <option value=""
+                                th:selected="${contratoForm.aluno == null}">
+                                Selecione um aluno
+                            </option>
 
                             <option th:each="aluno : ${listarAlunos}"
                                 th:value="${aluno.ra}"
-                                th:text="${aluno.ra + ' - ' + aluno.nome}">
+                                th:text="${aluno.ra + ' - ' + aluno.nome}"
+                                th:selected="${contratoForm.aluno != null and contratoForm.aluno.ra == aluno.ra}">
                             </option>
                         </select>
                     </div>
@@ -207,12 +213,16 @@
                     <div class="campo">
                         <label for="empresa">Empresa</label>
 
-                        <select id="empresa" required>
-                            <option value="">Selecione uma empresa</option>
+                        <select id="empresa" name="empresa.id" required>
+                            <option value=""
+                                th:selected="${contratoForm.empresa == null}">
+                                Selecione uma empresa
+                            </option>
 
                             <option th:each="empresa : ${listarEmpresas}"
                                 th:value="${empresa.id}"
-                                th:text="${empresa.razaoSocial}">
+                                th:text="${empresa.razaoSocial}"
+                                th:selected="${contratoForm.empresa != null and contratoForm.empresa.id == empresa.id}">
                             </option>
                         </select>
                     </div>
@@ -222,7 +232,7 @@
                         <label for="area">Área</label>
 
                         <input type="text"
-                            id="area"
+                            th:field="*{area}"
                             placeholder="Ex.: Tecnologia"
                             required>
                     </div>
@@ -232,7 +242,7 @@
                         <label for="cargo">Cargo</label>
 
                         <input type="text"
-                            id="cargo"
+                            th:field="*{cargo}"
                             placeholder="Ex.: Estagiário de TI"
                             required>
                     </div>
@@ -241,7 +251,7 @@
                     <div class="campo">
                         <label for="modalidade">Modalidade</label>
 
-                        <select id="modalidade" required>
+                        <select th:field="*{modalidade}" required>
                             <option value="">Selecione</option>
                             <option value="PRESENCIAL">Presencial</option>
                             <option value="HIBRIDO">Híbrido</option>
@@ -254,7 +264,7 @@
                         <label for="horario">Horário</label>
 
                         <input type="text"
-                            id="horario"
+                            th:field="*{horario}"
                             placeholder="Ex.: 08:00 às 14:00"
                             required>
                     </div>
@@ -264,7 +274,7 @@
                         <label for="cargaHoraria">Carga horária (horas)</label>
 
                         <input type="number"
-                            id="cargaHoraria"
+                            th:field="*{cargaHoraria}"
                             min="1"
                             max="44"
                             placeholder="Ex.: 6"
@@ -276,7 +286,7 @@
                         <label for="dataInicio">Data de início</label>
 
                         <input type="date"
-                            id="dataInicio"
+                            th:field="*{dataInicio}"
                             required>
                     </div>
 
@@ -285,7 +295,7 @@
                         <label for="dataTermino">Data de término</label>
 
                         <input type="date"
-                            id="dataTermino"
+                            th:field="*{dataTermino}"
                             required>
                     </div>
 
@@ -293,9 +303,15 @@
                     <div class="campo campo-status">
                         <label for="ativo">Situação do contrato</label>
 
-                        <select id="ativo" required>
-                            <option value="true">Ativo</option>
-                            <option value="false">Inativo</option>
+                        <select id="ativo" name="ativo" required>
+                            <option value="true"
+                                th:selected="${!modoEdicao or contratoForm.ativo}">
+                                Ativo
+                            </option>
+                            <option value="false"
+                                th:selected="${modoEdicao and !contratoForm.ativo}">
+                                Inativo
+                            </option>
                         </select>
                     </div>
 
