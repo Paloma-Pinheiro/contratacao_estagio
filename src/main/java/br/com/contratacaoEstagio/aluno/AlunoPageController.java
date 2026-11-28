@@ -68,16 +68,11 @@ public class AlunoPageController {
             @ModelAttribute Localizacao localizacao,
             RedirectAttributes redirectAttributes) {
 
-        if (alunoService.verificarRa(aluno.getRa())) {
+        if (!alunoService.cadastrarComLocalizacao(aluno, localizacao)) {
             redirectAttributes.addFlashAttribute(
                     "erro", "Já existe um aluno cadastrado com esse RA.");
             return "redirect:/aluno";
         }
-
-        Aluno alunoSalvo = alunoService.cadastrar(aluno);
-
-        localizacao.setAluno(alunoSalvo);
-        localizacaoService.cadastrar(localizacao);
 
         redirectAttributes.addFlashAttribute(
                 "sucesso", "Aluno cadastrado com sucesso.");

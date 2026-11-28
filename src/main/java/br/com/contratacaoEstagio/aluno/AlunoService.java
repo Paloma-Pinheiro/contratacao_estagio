@@ -34,6 +34,19 @@ public class AlunoService {
     }
 
     @Transactional
+    public boolean cadastrarComLocalizacao(Aluno aluno, Localizacao localizacao) {
+        if (verificarRa(aluno.getRa())) {
+            return false;
+        }
+
+        Aluno alunoSalvo = alunoRepository.save(aluno);
+        localizacao.setAluno(alunoSalvo);
+        localizacaoService.cadastrar(localizacao);
+
+        return true;
+    }
+
+    @Transactional
     public boolean atualizarComLocalizacao(
             String ra,
             Aluno dadosAtualizados,
